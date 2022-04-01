@@ -74,9 +74,8 @@ public class Task : ScriptableObject
 
     public bool IsComplete => state == TaskState.Complete;
 
-    // Quest 구현하기 전까지 일단 주석
-    //public Quest Owner { get; private set; }
-    //public void Setup(Quest _owner) => Owner = _owner;
+    public Quest Owner { get; private set; }
+    public void Setup(Quest _owner) => Owner = _owner;
 
     public void Start()
     {

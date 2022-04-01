@@ -11,6 +11,7 @@ public class Category : ScriptableObject, IEquatable<Category>
     [SerializeField] string displayName;
     public string DisplayName => displayName;
 
+
     #region Operator
     public bool Equals(Category _other)
     {
