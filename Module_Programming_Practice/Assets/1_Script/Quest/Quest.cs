@@ -62,7 +62,7 @@ public class Quest : ScriptableObject
     [Header("Options")]
     [SerializeField] bool useAutoComplete;
     [SerializeField] bool isCancelable;
-    public bool IsCancelable => isCancelable && cancelConditions.All(_condition => _condition.IsPass(this));
+    public virtual bool IsCancelable => isCancelable && cancelConditions.All(_condition => _condition.IsPass(this));
 
 
     [Header("Condition")]
@@ -141,7 +141,7 @@ public class Quest : ScriptableObject
         OnNewTaskGroup = null;
     }
 
-    public void Cancel()
+    public virtual void Cancel()
     {
         CheckIsRunngin();
         Debug.Assert(isCancelable, "this quest can not canceled");
