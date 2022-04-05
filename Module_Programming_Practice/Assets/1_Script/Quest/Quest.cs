@@ -42,7 +42,8 @@ public class Quest : ScriptableObject
     public string CodeName => codeName;
     [SerializeField] string displayName;
     public string DisplayName => displayName;
-    [SerializeField] string description;
+
+    [SerializeField, TextArea] string description;
     public string Description => description;
 
 
@@ -106,10 +107,10 @@ public class Quest : ScriptableObject
         if (IsCompletable) return;
 
         CurrentTaskGroup.ReceiveReport(_category, _target, _successCount);
-
+        
         if (CurrentTaskGroup.IsAllComplete)
         {
-            if (currentTaskGroupIndex == taskGroups.Length + 1) // 다음 퀘스트 그룹이 없다면
+            if (currentTaskGroupIndex + 1 == taskGroups.Length) // 다음 퀘스트 그룹이 없다면
             {
                 State = QuestState.WaitingForComletion;
                 if (useAutoComplete) Complete();
@@ -150,12 +151,17 @@ public class Quest : ScriptableObject
         OnCanceled?.Invoke(this);
     }
 
+    public Quest Clone()
+    {
+        Quest _clone = Instantiate(this);
+        _clone.taskGroups = taskGroups.Select(x => new TaskGroup(x)).ToArray();
+        return _clone;
+    }
 
     // 사용자가 선언하는 디버그용 함수로 Unity Editor가 아닌 환경에서는 실행되지 않고 무시됨
     [Conditional("UNITY_EDITOR")]
     void CheckIsRunngin()
     {
-        Debug.Log("22");
         Debug.Assert(IsRegistered, "this quest not registered.");
         Debug.Assert(!IsCancel, "this quest has been canceled");
         Debug.Assert(!IsCancel, "this quest has already beed completed");

@@ -23,6 +23,11 @@ public class TaskGroup
 
     public TaskGroupState State { get; private set; }
 
+    public TaskGroup(TaskGroup _copyTarget)
+    {
+        tasks = _copyTarget.tasks.Select(x => Object.Instantiate(x)).ToArray();
+    }
+
     public void Setup(Quest _owner)
     {
         Owner = _owner;
