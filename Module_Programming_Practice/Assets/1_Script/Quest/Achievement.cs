@@ -6,6 +6,7 @@ using UnityEngine;
 public class Achievement : Quest
 {
     public override bool IsCancelable => false;
+    public override bool IsSaveable => true;
 
     public override void Cancel() => Debug.LogAssertion("Achievement is can't be canceled");
 }

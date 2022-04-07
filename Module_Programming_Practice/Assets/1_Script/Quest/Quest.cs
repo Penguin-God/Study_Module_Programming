@@ -62,6 +62,10 @@ public class Quest : ScriptableObject
 
     [Header("Options")]
     [SerializeField] bool useAutoComplete;
+
+    [SerializeField] bool isSaveable;
+    public virtual bool IsSaveable => isSaveable;
+
     [SerializeField] bool isCancelable;
     public virtual bool IsCancelable => isCancelable && cancelConditions.All(_condition => _condition.IsPass(this));
 
@@ -156,6 +160,36 @@ public class Quest : ScriptableObject
         Quest _clone = Instantiate(this);
         _clone.taskGroups = taskGroups.Select(x => new TaskGroup(x)).ToArray();
         return _clone;
+    }
+
+    public QuestSaveData ToSaveData()
+    {
+        return new QuestSaveData
+        {
+            codeName = CodeName,
+            state = State,
+            currentTaskGroupIndex = currentTaskGroupIndex,
+            taskSuccessCounts = CurrentTaskGroup.Tasks.Select(x => x.CurrentSuccess).ToArray(),
+        };
+    }
+
+    public void LoadFrom(QuestSaveData _saveData)
+    {
+        codeName = _saveData.codeName;
+        State = _saveData.state;
+
+        for (int i = 0; i < _saveData.currentTaskGroupIndex; i++)
+        {
+            TaskGroup _group = taskGroups[i];
+            _group.Start();
+            _group.Complete();
+        }
+
+        for (int i = 0; i < _saveData.taskSuccessCounts.Length; i++)
+        {
+            CurrentTaskGroup.Start();
+            CurrentTaskGroup.Tasks[i].CurrentSuccess = _saveData.taskSuccessCounts[i];
+        }
     }
 
     // 사용자가 선언하는 디버그용 함수로 Unity Editor가 아닌 환경에서는 실행되지 않고 무시됨

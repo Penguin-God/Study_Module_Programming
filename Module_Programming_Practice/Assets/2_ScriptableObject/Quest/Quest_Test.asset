@@ -22,6 +22,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f2f1d2f035b8af1439618e0aeab9ae30, type: 2}
   rewards: []
   useAutoComplete: 1
+  isSaveable: 1
   isCancelable: 0
   acceptionConditions: []
   cancelConditions: []

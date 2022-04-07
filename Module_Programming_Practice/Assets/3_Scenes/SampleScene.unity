@@ -216,6 +216,7 @@ GameObject:
   m_Component:
   - component: {fileID: 831134323}
   - component: {fileID: 831134322}
+  - component: {fileID: 831134324}
   m_Layer: 0
   m_Name: Test
   m_TagString: Untagged
@@ -230,7 +231,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 831134321}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07547d43347d6e1498a2746e090713e6, type: 3}
   m_Name: 
@@ -252,3 +253,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &831134324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831134321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 100ba19028797c548981d7e4a2e9ca47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quest: {fileID: 11400000, guid: 75267430c23be3a43b24ad93f0d7801b, type: 2}
+  category: {fileID: 11400000, guid: 6c94db2f51869884e94878ef63990a27, type: 2}
+  target: {fileID: 11400000, guid: e4726ee204d681346bbc0881c70bb4bf, type: 2}
