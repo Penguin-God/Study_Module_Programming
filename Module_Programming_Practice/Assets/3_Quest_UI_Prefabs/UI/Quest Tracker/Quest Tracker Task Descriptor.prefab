@@ -149,6 +149,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 6774673762540671645}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
-  taskSuccessCountColor: {r: 0.11532295, g: 1, b: 0, a: 1}
-  taskCompleteColor: {r: 0.9019608, g: 0, b: 0, a: 1}
+  taskSuccessCountColor: {r: 1, g: 0.02821736, b: 0, a: 1}
+  taskCompleteColor: {r: 0.11372549, g: 1, b: 0, a: 1}
   strikeThroughColor: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}

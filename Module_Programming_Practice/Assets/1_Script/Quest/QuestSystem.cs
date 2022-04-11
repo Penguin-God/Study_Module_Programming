@@ -67,7 +67,7 @@ public class QuestSystem : MonoBehaviour
     private void OnApplicationQuit()
     {
         isApplicationQuitting = true;
-        Save();
+        //Save();
     }
 
     public event Action<Quest> OnQuestRegistered;
@@ -90,16 +90,20 @@ public class QuestSystem : MonoBehaviour
         {
             activeAchievements.Add(_newQuest);
             _newQuest.OnCompleted += Raise_OnAchievementCompleted;
+
+            _newQuest.OnRegister();
+            OnAchievementRegistered?.Invoke(_newQuest);
         }
         else
         {
             activeQuests.Add(_newQuest);
             _newQuest.OnCompleted += Raise_OnQuestCompleted;
             _newQuest.OnCanceled += Raise_OnQuestCanceled;
+
+            _newQuest.OnRegister();
+            OnQuestRegistered?.Invoke(_newQuest);
         }
 
-        _newQuest.OnRegister();
-        OnQuestRegistered?.Invoke(_newQuest);
         return _newQuest;
     }
 

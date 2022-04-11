@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9e346741f9ba3549b3f0a813f952059, type: 3}
+  m_Name: Quest_HealThePatitnesBody
+  m_EditorClassIdentifier: 
+  category: {fileID: 11400000, guid: 43d7ebca58c2642428784f52ec770142, type: 2}
+  icon: {fileID: 0}
+  codeName: HEAL_THE_PATHTNES_BODY
+  displayName: heal the pathnes body
+  description: you shold heal the pathnes body
+  taskGroups:
+  - tasks:
+    - {fileID: 11400000, guid: e49e7ed34bbac0244a2b3e0445e46345, type: 2}
+  - tasks:
+    - {fileID: 11400000, guid: e33be7ff1f2b2d443bd119a28fcbb5fd, type: 2}
+  - tasks:
+    - {fileID: 11400000, guid: 7dd93872a51a9104f914262c4fe5d617, type: 2}
+  - tasks:
+    - {fileID: 11400000, guid: 39c059bfd8cb0f145b2f4dc75b34f251, type: 2}
+  - tasks:
+    - {fileID: 11400000, guid: dc311d21367ad1546866f2a7043a5096, type: 2}
+  - tasks:
+    - {fileID: 11400000, guid: 5d0c3d4913ce5d34db8b5a53044c7339, type: 2}
+  rewards: []
+  useAutoComplete: 0
+  isSaveable: 0
+  isCancelable: 0
+  acceptionConditions: []
+  cancelConditions: []

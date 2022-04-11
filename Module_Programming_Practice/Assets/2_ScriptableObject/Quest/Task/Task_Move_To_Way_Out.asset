@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57642af7df9a4c14eaa01d2b8118f921, type: 3}
+  m_Name: Task_Move_To_Way_Out
+  m_EditorClassIdentifier: 
+  category: {fileID: 11400000, guid: 7f6136e0b745c594498df9fb9b2afade, type: 2}
+  codeName: MOVE_TO_WAY_OUT
+  description: You have to move to way out
+  taskAction: {fileID: 11400000, guid: 6c0707ed7c261f1499f8c3657f578ffa, type: 2}
+  targets:
+  - {fileID: 11400000, guid: 20adc9b7470a47c4e9eef8cb06793713, type: 2}
+  initialSuccessValue: {fileID: 0}
+  needSuccessToComplete: 1
+  canReceiveReportsDuringCompletion: 0

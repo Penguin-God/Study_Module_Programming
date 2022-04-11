@@ -1,7 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
+using UnityEngine.Events;
 using Vector3 = UnityEngine.Vector3;
 
 public class Target : MonoBehaviour
@@ -10,6 +11,7 @@ public class Target : MonoBehaviour
     public int pointValue;
 
     public ParticleSystem DestroyedEffect;
+    public UnityEvent OnDead;
 
     [Header("Audio")]
     public RandomPlayer HitPlayer;
@@ -69,5 +71,6 @@ public class Target : MonoBehaviour
         gameObject.SetActive(false);
        
         GameSystem.Instance.TargetDestroyed(pointValue);
+        OnDead?.Invoke();
     }
 }

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57642af7df9a4c14eaa01d2b8118f921, type: 3}
+  m_Name: Task_Collect_First_Key
+  m_EditorClassIdentifier: 
+  category: {fileID: 11400000, guid: c123b428d1b10514387143bd7310fbbe, type: 2}
+  codeName: TASK_COLLECT_FIRST_KEY
+  description: you have collect first key
+  taskAction: {fileID: 11400000, guid: 6c0707ed7c261f1499f8c3657f578ffa, type: 2}
+  targets:
+  - {fileID: 11400000, guid: 8385bf672abbc8643b3648172ae22e29, type: 2}
+  initialSuccessValue: {fileID: 0}
+  needSuccessToComplete: 1
+  canReceiveReportsDuringCompletion: 0

@@ -22,11 +22,11 @@ public class TaskDescriptor : MonoBehaviour
 
     public void UpdateText(Task _task)
     {
-        if (!_task.IsComplete) BuildText(_task, ColorUtility.ToHtmlStringRGB(normalColor), ColorUtility.ToHtmlStringRGB(taskSuccessCountColor));
+        if (!_task.IsComplete) UpdateText(_task, ColorUtility.ToHtmlStringRGB(normalColor), ColorUtility.ToHtmlStringRGB(taskSuccessCountColor));
         else
         {
             string _completeColorCode = ColorUtility.ToHtmlStringRGB(taskCompleteColor);
-            BuildText(_task, _completeColorCode, _completeColorCode);
+            UpdateText(_task, _completeColorCode, _completeColorCode);
         }
     }
 
@@ -34,10 +34,10 @@ public class TaskDescriptor : MonoBehaviour
     {
         text.fontStyle = FontStyles.Strikethrough;
         string _strikeThroughColorCode = ColorUtility.ToHtmlStringRGB(strikeThroughColor);
-        BuildText(_task, _strikeThroughColorCode, _strikeThroughColorCode);
+        UpdateText(_task, _strikeThroughColorCode, _strikeThroughColorCode);
     }
 
-    private string BuildText(Task _task, string _textColorCode, string _successCountColorCode)
-        => $"<color=#{_textColorCode}>● {_task.Description} <color=#{_successCountColorCode}>{_task.CurrentSuccess} / </color>{_task.NeedSuccessToComplete}</color>";
+    private void UpdateText(Task _task, string _textColorCode, string _successCountColorCode)
+        => text.text = $"<color=#{_textColorCode}>● {_task.Description} <color=#{_successCountColorCode}>{_task.CurrentSuccess}</color> / {_task.NeedSuccessToComplete}</color>";
     
 }

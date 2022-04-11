@@ -59,7 +59,7 @@ public class QuestTracker : MonoBehaviour
     {
         foreach(Task _task in _currentTaskGroup.Tasks)
         {
-            TaskDescriptor _newDescriptor = Instantiate(taskDescriptorPrefab);
+            TaskDescriptor _newDescriptor = Instantiate(taskDescriptorPrefab, transform);
             _newDescriptor.UpdateText(_task);
             _task.OnSuccessChanged += UpdateText;
 
