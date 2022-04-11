@@ -5,13 +5,13 @@ using TMPro;
 
 public class TaskDescriptor : MonoBehaviour
 {
-    // TextMeshProUGUI : TextMeshPro ƒƒ∆˜≥Õ∆Æ
+    // TextMeshProUGUI : TextMeshPro Ïª¥Ìè¨ÎÑåÌä∏
     [SerializeField] TextMeshProUGUI text;
 
     [SerializeField] Color normalColor;
     [SerializeField] Color taskSuccessCountColor;
     [SerializeField] Color taskCompleteColor;
-    [SerializeField] Color strikeThroughColor; // ¬¯º±( πÆ¿⁄∏¶ ∞°∑Œ¡ˆ∏£¥¬ º±, ≥™π´¿ß≈∞ø° ∏π¿Ã ≥™ø¿¥¬ ±◊∞≈ )
+    [SerializeField] Color strikeThroughColor; // Ï∞©ÏÑ†( Î¨∏ÏûêÎ•º Í∞ÄÎ°úÏßÄÎ•¥Îäî ÏÑ†, ÎÇòÎ¨¥ÏúÑÌÇ§ÏóêÏÑú ÎßéÏù¥ Ïì∞Îäî Í∑∏Í±∞ )
 
 
     public void UpdateText(string _text)
@@ -38,6 +38,6 @@ public class TaskDescriptor : MonoBehaviour
     }
 
     private string BuildText(Task _task, string _textColorCode, string _successCountColorCode)
-        => $"<color=#{_textColorCode}>°‹ {_task.Description} <color=#{_successCountColorCode}>{_task.CurrentSuccess} / </color>{_task.NeedSuccessToComplete}</color>";
+        => $"<color=#{_textColorCode}>‚óè {_task.Description} <color=#{_successCountColorCode}>{_task.CurrentSuccess} / </color>{_task.NeedSuccessToComplete}</color>";
     
 }

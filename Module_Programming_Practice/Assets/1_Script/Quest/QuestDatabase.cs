@@ -33,7 +33,7 @@ public class QuestDatabase : ScriptableObject
     public void FindQuestsBy<T>() where T : Quest
     {
         quests = new List<Quest>();
-        // T typeÀÎ AssetµéÀÇ guid¸¦ °¡Á®¿È
+        // T typeì¸ Assetë“¤ì˜ guidë¥¼ ê°€ì ¸ì˜´
         string[] _guids = AssetDatabase.FindAssets($"t:{typeof(T)}");
 
         foreach(string _guid in _guids)
@@ -42,8 +42,8 @@ public class QuestDatabase : ScriptableObject
             Quest _quest = AssetDatabase.LoadAssetAtPath<T>(_assetPath);
 
             if (_quest.GetType() == typeof(T)) quests.Add(_quest);
-            EditorUtility.SetDirty(this); // asset ÀúÀå ½Ã ¹İ¿µ
-            AssetDatabase.SaveAssets(); // asset ÀúÀå
+            EditorUtility.SetDirty(this); // asset ì €ì¥ ì‹œ ë³€ê²½ëœ ë‚´ìš©ì„ ë°˜ì˜í•˜ëŠ” í•¨ìˆ˜
+            AssetDatabase.SaveAssets(); // asset ì €ì¥
         }
     }
     #endif

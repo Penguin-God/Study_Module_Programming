@@ -69,7 +69,7 @@ public class Task : ScriptableObject
         }
     }
 
-    // ¹Ì¼Ç ¿Ï·á¿©µµ °è¼Ó °ªÀ» ¹ŞÀ» °ÍÀÎ°¡? (¹Ì¼Ç ³¡³ª°í ÅÛ ¹ö¸®´Â µîÀÇ ¿¹¿ÜÃ³¸®¿ë)
+    // ë¯¸ì…˜ ì™„ë£Œì—¬ë„ ê³„ì† ê°’ì„ ë°›ì„ ê²ƒì¸ê°€? (ë¯¸ì…˜ ëë‚˜ê³  í…œ ë²„ë¦¬ëŠ” ë“±ì˜ ì˜ˆì™¸ì²˜ë¦¬ìš©)
     [SerializeField] bool canReceiveReportsDuringCompletion;
 
     public bool IsComplete => state == TaskState.Complete;
@@ -93,7 +93,7 @@ public class Task : ScriptableObject
 
     public void Complete() => CurrentSuccess = needSuccessToComplete;
 
-    // targets ¾È¿¡ _target°ú °°Àº ³ğÀÌ ÀÖ´ÂÁö ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+    // targets ì•ˆì— _targetê³¼ ê°™ì€ ë†ˆì´ ìˆëŠ”ì§€ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
     public bool IsTarget(string _category, object _target) => 
         Category == _category && 
         targets.Any(x => x.IsTarget(_target)) && 

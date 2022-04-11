@@ -13,8 +13,8 @@ public class GameObjectTarget : TaskTarget
         GameObject _targetAsGameObject = _target as GameObject;
         if (_targetAsGameObject == null) return false;
         
-        // ÀÎÀÚ°ªÀ¸·Î µé¾î¿Â ¿ÀºêÁ§Æ®°¡ ¾À ¿ÀºêÁ§Æ®¶ó¸é ÀÌ¸§ µÚ¿¡ (clone) °ú °°Àº °ªµéÀÌ Ãß°¡µÇ ÀÖÀ» ¼ö ÀÖÀ½.
-        // ±×·¯¹Ç·Î ÀÎÀÚ°ªÀÇ ÀÌ¸§¿¡ valueÀÇ ÀÌ¸§ÀÌ Æ÷ÇÔµÇ¾î ÀÖ´ÂÁö È®ÀÎÇÏ´Â ¹æ½ÄÀ¸·Î ºñ±³ÇÔ
+        // ì¸ìê°’ìœ¼ë¡œ ë“¤ì–´ì˜¨ ì˜¤ë¸Œì íŠ¸ê°€ ì”¬ ì˜¤ë¸Œì íŠ¸ë¼ë©´ ì´ë¦„ ë’¤ì— (clone) ê³¼ ê°™ì€ ê°’ë“¤ì´ ì¶”ê°€ë˜ ìˆì„ ìˆ˜ ìˆìŒ.
+        // ê·¸ëŸ¬ë¯€ë¡œ ì¸ìê°’ì˜ ì´ë¦„ì— valueì˜ ì´ë¦„ì´ í¬í•¨ë˜ì–´ ìˆëŠ”ì§€ í™•ì¸í•˜ëŠ” ë°©ì‹ìœ¼ë¡œ ë¹„êµí•¨
         return _targetAsGameObject.name.Contains(value.name);
     }
 }

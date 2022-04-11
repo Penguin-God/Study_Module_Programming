@@ -8,11 +8,11 @@ using Debug = UnityEngine.Debug;
 
 public enum QuestState
 {
-    Inactive, // ºñÈ°¼º
+    Inactive, // ë¹„í™œì„±í™”
     Running,
     Complete,
     Cancel,
-    WaitingForComletion, // ¹Ì¼ÇÀº ÀÌ¹Ì ²¢°í À¯Àú°¡ µû·Î ¿Ï·áÇÏ±â¸¦ ´©¸£±â¸¦ ±â´Ù¸®´Â »óÅÂ
+    WaitingForComletion, // ë¯¸ì…˜ì€ ì´ë¯¸ ê¹»ê³  ìœ ì €ê°€ ë”°ë¡œ ì™„ë£Œí•˜ê¸°ë¥¼ ëˆ„ë¥´ê¸°ë¥¼ ê¸°ë‹¤ë¦¬ëŠ” ìƒíƒœ
 }
 
 [CreateAssetMenu(menuName = "Quest/Quest", fileName = "Quest_")]
@@ -79,7 +79,7 @@ public class Quest : ScriptableObject
 
     // code
 
-    // ¿ÜºÎ¿¡¼­´Â QuestÀÇ ÀÌº¥Æ®¸¸ ±¸µ¶ÇØµÎ¸é ¿©·¯ taskÀÇ ¼º°ø º¯È­¸¦ °¨ÁöÇÒ ¼ö ÀÖÀ½
+    // ì™¸ë¶€ì—ì„œëŠ” Questì˜ ì´ë²¤íŠ¸ë§Œ êµ¬ë…í•´ë‘ë©´ ì—¬ëŸ¬ taskì˜ ì„±ê³µ ë³€í™”ë¥¼ ê°ì§€í•  ìˆ˜ ìˆìŒ
     public event TaskSuccessChangeHandler OnTaskSuccessChanged;
     public void Raise_OnTaskSuccessChanged(Task _task, int _currentSuccess, int _prevSuccess) 
         => OnTaskSuccessChanged?.Invoke(this, _task, _currentSuccess, _prevSuccess);
@@ -88,7 +88,7 @@ public class Quest : ScriptableObject
     public event CanceledHandler OnCanceled;
     public event NewTaskGroupHandler OnNewTaskGroup;
 
-    // Debug.Assert() ÀÎ¼ö°¡ false¸é µÚ¿¡ ¹®ÀåÀ» Error¹®À¸·Î Ãâ·Â. µğ¹ö±ë ÄÚµå·Î ºôµåÇÏ¸é ¹«½ÃµÊ
+    // Debug.Assert() ì¸ìˆ˜ê°€ falseë©´ ë’¤ì— ë¬¸ì¥ì„ Errorë¬¸ìœ¼ë¡œ ì¶œë ¥. ë””ë²„ê¹… ì½”ë“œë¡œ ë¹Œë“œí•˜ë©´ ë¬´ì‹œë¨
     public void OnRegister()
     {
         Debug.Assert(!IsRegistered, "this quest has already been registered.");
@@ -96,6 +96,7 @@ public class Quest : ScriptableObject
         foreach(TaskGroup _taskGroup in taskGroups)
         {
             _taskGroup.Setup(this);
+            // Questì˜ OnTaskSuccessChangedë¥¼ êµ¬ë…í•˜ë©´ Taskì˜ OnSuccessChangedë¥¼ ì¼ì¼ì´ êµ¬ë…í•˜ì§€ ì•Šì•„ë„ ë³€í™”ë¥¼ ê°ì§€í•  ìˆ˜ ìˆìŒ
             foreach (Task _task in _taskGroup.Tasks)
                 _task.OnSuccessChanged += Raise_OnTaskSuccessChanged;
         }
@@ -114,20 +115,20 @@ public class Quest : ScriptableObject
         
         if (CurrentTaskGroup.IsAllComplete)
         {
-            if (currentTaskGroupIndex + 1 == taskGroups.Length) // ´ÙÀ½ Äù½ºÆ® ±×·ìÀÌ ¾ø´Ù¸é
+            if (currentTaskGroupIndex + 1 == taskGroups.Length) // ë‹¤ìŒ í€˜ìŠ¤íŠ¸ ê·¸ë£¹ì´ ì—†ë‹¤ë©´
             {
                 State = QuestState.WaitingForComletion;
                 if (useAutoComplete) Complete();
             }
             else
             {
-                TaskGroup _prevTaskGroup = TaskGroups[currentTaskGroupIndex++]; // ÇöÀç TaskGroupÀ» °¡Á®¿À¸é¼­ index Áõ°¡
+                TaskGroup _prevTaskGroup = TaskGroups[currentTaskGroupIndex++]; // í˜„ì¬ TaskGroupì„ ê°€ì ¸ì˜¤ë©´ì„œ index ì¦ê°€
                 _prevTaskGroup.End();
                 CurrentTaskGroup.Start();
                 OnNewTaskGroup?.Invoke(this, CurrentTaskGroup, _prevTaskGroup);
             }
         }
-        else State = QuestState.Running; // ÀÌ¹Ì ±ü »óÅÂ¿¡¼­ ¹°°Ç ¹ö¸®´Â µî Æ®·ÑÁşÇÏ¸é ´Ù½Ã Running·Î µ¹¾Æ°¨
+        else State = QuestState.Running; // ì´ë¯¸ ê¹¬ ìƒíƒœì—ì„œ ë¬¼ê±´ ë²„ë¦¬ëŠ” ë“± íŠ¸ë¡¤ì§“í•˜ë©´ ë‹¤ì‹œ Runningë¡œ ëŒì•„ê°
     }
 
     public void Complete()
@@ -192,7 +193,7 @@ public class Quest : ScriptableObject
         }
     }
 
-    // »ç¿ëÀÚ°¡ ¼±¾ğÇÏ´Â µğ¹ö±×¿ë ÇÔ¼ö·Î Unity Editor°¡ ¾Æ´Ñ È¯°æ¿¡¼­´Â ½ÇÇàµÇÁö ¾Ê°í ¹«½ÃµÊ
+    // ì‚¬ìš©ìê°€ ì„ ì–¸í•˜ëŠ” ë””ë²„ê·¸ìš© í•¨ìˆ˜ë¡œ Unity Editorê°€ ì•„ë‹Œ í™˜ê²½ì—ì„œëŠ” ì‹¤í–‰ë˜ì§€ ì•Šê³  ë¬´ì‹œë¨
     [Conditional("UNITY_EDITOR")]
     void CheckIsRunngin()
     {

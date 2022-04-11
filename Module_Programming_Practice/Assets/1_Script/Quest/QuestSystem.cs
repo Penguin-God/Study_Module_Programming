@@ -55,8 +55,8 @@ public class QuestSystem : MonoBehaviour
         questDatabase = Resources.Load<QuestDatabase>("Quest_Database");
         achievementDatabase = Resources.Load<QuestDatabase>("Achievement_Database");
 
-        bool _isFirst = !Load(); // ·ÎµåÇÏ¸é¼­ bool °ª ¼¼ÆÃ
-        // ¾÷ÀûµéÀº °ÔÀÓ Ã³À½ ½ÃÀÛ ½Ã ´Ù µî·ÏÇØµÒ
+        bool _isFirst = !Load(); // ë¡œë“œí•˜ë©´ì„œ bool ê°’ ì„¸íŒ…
+        // ì—…ì ë“¤ì€ ê²Œì„ ì²˜ìŒ ì‹œì‘ ì‹œ ë‹¤ ë“±ë¡í•´ë‘ 
         if (_isFirst)
         {
             foreach (Quest _quest in achievementDatabase.Quests) 
@@ -80,10 +80,10 @@ public class QuestSystem : MonoBehaviour
 
     public Quest Register(Quest _quest)
     {
-        // º¹»çº» »ı¼º
-        // quest ³»ºÎ¿¡ ÀÖ´Â taskµµ scriptable objectÀÌ±â ¶§¹®¿¡ task¿Í °°Àº ¸ğµâµµ º¹»çº»À» ¸¸µé¾îÁà¾ßÇÔ
-        // ÇÏ³ªÇÏ³ª ¸¸µé±â¿¡´Â ³Ê¹« ÁöÀúºĞÇÏ´Ï ÁöµéÀÌ ¾Ë¾Æ¼­ º¹»çº»À» ¸¸µé¾îÁÖ´Â ÇÔ¼ö¸¦ »ç¿ëÇÏ´Â ÂÊÀ¸·Î ±¸ÇöÇÔ
-        // ÀÌ·¯¸é ÈÄ¿¡ º¹»çº» »ı¼º ³»ºÎ ÄÚµå¿¡ º¯È­°¡ »ı°Üµµ QuestSystemÀº ¼öÁ¤ÇÒ ÇÊ¿ä°¡ ¾øÀ½
+        // ë³µì‚¬ë³¸ ìƒì„±
+        // quest ë‚´ë¶€ì— ìˆëŠ” taskë„ scriptable objectì´ê¸° ë•Œë¬¸ì— taskì™€ ê°™ì€ ëª¨ë“ˆë„ ë³µì‚¬ë³¸ì„ ë§Œë“¤ì–´ì¤˜ì•¼í•¨
+        // ì—¬ê¸°ì—ì„œ í•˜ë‚˜í•˜ë‚˜ ë³µì‚¬ë³¸ì„ ë§Œë“¤ê¸°ì—ëŠ” ë„ˆë¬´ ì§€ì €ë¶„í•˜ë‹ˆ ì§€ë“¤ì´ ì•Œì•„ì„œ ë³µì‚¬ë³¸ì„ ë§Œë“¤ì–´ì£¼ëŠ” í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•˜ëŠ” ìª½ìœ¼ë¡œ êµ¬í˜„í•¨
+        // ì´ëŸ¬ë©´ í›„ì— ë³µì‚¬ë³¸ ìƒì„± ë‚´ë¶€ ì½”ë“œì— ë³€í™”ê°€ ìƒê²¨ë„ QuestSystemì€ ìˆ˜ì •í•  í•„ìš”ê°€ ì—†ìŒ
         Quest _newQuest = _quest.Clone();
         
         if(_newQuest is Achievement)
@@ -115,14 +115,14 @@ public class QuestSystem : MonoBehaviour
 
     private void ReceiveReport(List<Quest> _quests, string _category, object _target ,int _successCount)
     {
-        // ¸®½ºÆ®ÀÇ »çº»À» ¸¸µé¾î µ¹¸®´Â ÀÌÀ¯´Â complete ½Ã ÆÄ±«µÇµµ·Ï ÀÌº¥Æ®¿¡ µî·ÏÇØµÎ¾î ¹İº¹¹® Áß quest°¡ ¾ø¾îÁö¸é¼­ ¿¡·¯°¡ ³¯ ¼öµµ ÀÖ¾î¼­
+        // ë¦¬ìŠ¤íŠ¸ì˜ ì‚¬ë³¸ì„ ë§Œë“¤ì–´ ëŒë¦¬ëŠ” ì´ìœ ëŠ” complete ì‹œ íŒŒê´´ë˜ë„ë¡ ì´ë²¤íŠ¸ì— ë“±ë¡í•´ë‘ì–´ ë°˜ë³µë¬¸ ì¤‘ questê°€ ì—†ì–´ì§€ë©´ì„œ ì—ëŸ¬ê°€ ë‚  ìˆ˜ë„ ìˆì–´ì„œ
         foreach (Quest _quest in _quests.ToArray()) 
             _quest.ReceiveReport(_category, _target, _successCount);
     }
 
 
 
-    #region Quest Event¿¡ µî·ÏÇØ³õÀ» CallBack ÇÔ¼öµé
+    #region Quest Eventì— ë“±ë¡í•´ë†“ì„ CallBack í•¨ìˆ˜ë“¤
     private void Raise_OnQuestCompleted(Quest _quest)
     {
         activeQuests.Remove(_quest);
@@ -149,7 +149,7 @@ public class QuestSystem : MonoBehaviour
 
 
 
-    #region quest°¡ ÀÖ´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼öµé
+    #region questê°€ ìˆëŠ”ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜ë“¤
     public bool ContainsInActiveQuests(Quest _quest) => activeQuests.Any(x => x.CodeName == _quest.CodeName);
 
     public bool ContainsInCompleteQuests(Quest _quest) => activeQuests.Any(x => x.CodeName == _quest.CodeName);

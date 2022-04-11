@@ -5,8 +5,8 @@ using TMPro;
 
 public class QuestTracker : MonoBehaviour
 {
-    // taskÀÇ Á¤º¸¸¦ Ãâ·ÂÇØÁÖ´Â TaskDescriptor, Quest Á¤º¸ Ãâ·Â°ú TaskDescriptorÀÇ Á¦¾î¸¦ ´ã´çÇÏ´Â QuestTrack
-    // QuestTrack¸¦ Á¦¾îÇÏ´Â QuestTrackerView 3°¡Áö ½ºÅ©¸³Æ®°¡ ÀÖÀ½
+    // taskì˜ ì •ë³´ë¥¼ ì¶œë ¥í•´ì£¼ëŠ” TaskDescriptor, Quest ì •ë³´ ì¶œë ¥ê³¼ TaskDescriptorì˜ ì œì–´ë¥¼ ë‹´ë‹¹í•˜ëŠ” QuestTrack
+    // QuestTrackë¥¼ ì œì–´í•˜ëŠ” QuestTrackerView 3ê°€ì§€ ìŠ¤í¬ë¦½íŠ¸ë¡œ êµ¬ì„±ë˜ì–´ ìˆìŒ
 
     [SerializeField] TextMeshProUGUI questTitleText;
     [SerializeField] TaskDescriptor taskDescriptorPrefab;
@@ -26,11 +26,11 @@ public class QuestTracker : MonoBehaviour
         _targetQeust.OnNewTaskGroup += UpdateTaskDescriptor;
         _targetQeust.OnCompleted += DestroySelf;
 
-        // ÃÖÃÊ Update
+        // ìµœì´ˆ Update
         IReadOnlyList<TaskGroup> _taskGroups = _targetQeust.TaskGroups;
         UpdateTaskDescriptor(_targetQeust, _taskGroups[0], null);
 
-        // ÀÌÀü °ÔÀÓÀ» ÇÃ·¹ÀÌÇÒ ¶§ ¹Ì¸® ¸î¸î Task¸¦ Å¬¸®¾îÇß´Ù¸é
+        // ì´ì „ ê²Œì„ì„ í”Œë ˆì´í•  ë•Œ ë¯¸ë¦¬ ëª‡ëª‡ Taskë¥¼ í´ë¦¬ì–´í–ˆë‹¤ë©´
         if(_taskGroups[0] != _targetQeust.CurrentTaskGroup)
         {
             for (int i = 1; i < _taskGroups.Count; i++)
