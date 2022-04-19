@@ -8,7 +8,7 @@ public class GameObjectTarget : TaskTarget
     [SerializeField] GameObject value;
     public override object Value => value;
 
-    public override bool IsTarget(object _target)
+    public override bool IsEqual(object _target)
     {
         GameObject _targetAsGameObject = _target as GameObject;
         if (_targetAsGameObject == null) return false;

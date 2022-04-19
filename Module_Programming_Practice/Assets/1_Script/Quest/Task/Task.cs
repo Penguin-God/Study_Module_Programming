@@ -48,7 +48,7 @@ public class Task : ScriptableObject
         {
             int _prevSuccess = currentSuccess;
             currentSuccess = Mathf.Clamp(value, 0 ,needSuccessToComplete);
-            if(_prevSuccess != currentSuccess)
+            if(_prevSuccess != currentSuccess) // 성공 횟수가 변했다면
             {
                 state = (currentSuccess == needSuccessToComplete) ? TaskState.Complete : TaskState.Running;
                 OnSuccessChanged?.Invoke(this, currentSuccess, _prevSuccess);
@@ -96,6 +96,8 @@ public class Task : ScriptableObject
     // targets 안에 _target과 같은 놈이 있는지 반환하는 함수
     public bool IsTarget(string _category, object _target) => 
         Category == _category && 
-        targets.Any(x => x.IsTarget(_target)) && 
+        targets.Any(x => x.IsEqual(_target)) && 
         (!IsComplete || IsComplete && canReceiveReportsDuringCompletion);
+
+    public bool ContainsTarget(object _target) => targets.Any(x => x.IsEqual(_target));
 }

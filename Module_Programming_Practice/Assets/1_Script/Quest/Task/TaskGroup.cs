@@ -65,4 +65,10 @@ public class TaskGroup
                 _task.Complete();
         }
     }
+
+    public Task FindTaskWithTarget(object _target) => tasks.FirstOrDefault(x => x.ContainsTarget(_target));
+    public Task FindTaskWithTarget(TaskTarget _target) => FindTaskWithTarget(_target.Value);
+
+    public bool ContainsTaskWithTarget(object _target) => tasks.Any(x => x.ContainsTarget(_target));
+    public bool ContainsTaskWithTarget(TaskTarget _target) => ContainsTaskWithTarget(_target.Value);
 }
