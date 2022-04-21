@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -78,6 +78,7 @@ public class GameSystem : MonoBehaviour
 #endif
         
         GameSystemInfo.Instance.UpdateTimer(0);
+        AddScore(PlayerPrefs.GetInt("bonusScore", 0));
     }
 
     public void ResetTimer()
@@ -201,12 +202,14 @@ public class GameSystem : MonoBehaviour
         return m_Timer + penalty;
     }
 
-    
+    public void AddScore(int _score)
+    {
+        m_Score += _score;
+        GameSystemInfo.Instance.UpdateScore(m_Score);
+    }    
     public void TargetDestroyed(int score)
     {
         m_TargetDestroyed += 1;
-        m_Score += score;
-
-        GameSystemInfo.Instance.UpdateScore(m_Score);
+        AddScore(score);
     }
 }

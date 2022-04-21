@@ -124,6 +124,14 @@ public class QuestSystem : MonoBehaviour
             _quest.ReceiveReport(_category, _target, _successCount);
     }
 
+    public void CompleteWatingQuest()
+    {
+        foreach(Quest _quest in activeQuests.ToList())
+        {
+            if (_quest.IsCompletable)
+                _quest.Complete();
+        }
+    }
 
 
     #region Quest Event에 등록해놓을 CallBack 함수들
@@ -156,17 +164,17 @@ public class QuestSystem : MonoBehaviour
     #region quest가 있는지 확인하는 함수들
     public bool ContainsInActiveQuests(Quest _quest) => activeQuests.Any(x => x.CodeName == _quest.CodeName);
 
-    public bool ContainsInCompleteQuests(Quest _quest) => activeQuests.Any(x => x.CodeName == _quest.CodeName);
+    public bool ContainsInCompleteQuests(Quest _quest) => completeQuests.Any(x => x.CodeName == _quest.CodeName);
 
-    public bool ContainsInActiveAchievement(Quest _quest) => activeQuests.Any(x => x.CodeName == _quest.CodeName);
+    public bool ContainsInActiveAchievement(Quest _quest) => activeAchievements.Any(x => x.CodeName == _quest.CodeName);
 
-    public bool ContainsInCompleteAchievement(Quest _quest) => activeQuests.Any(x => x.CodeName == _quest.CodeName);
+    public bool ContainsInCompleteAchievement(Quest _quest) => completeAchievements.Any(x => x.CodeName == _quest.CodeName);
     #endregion
 
 
 
     #region Save And Load
-    private void Save()
+    public void Save()
     {
         JObject _root = new JObject();
         _root.Add(key_ActiveQuestst, CreateSaveDatas(activeQuests));
@@ -177,7 +185,7 @@ public class QuestSystem : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    private bool Load()
+    public bool Load()
     {
         if (PlayerPrefs.HasKey(key_SaveRoot))
         {

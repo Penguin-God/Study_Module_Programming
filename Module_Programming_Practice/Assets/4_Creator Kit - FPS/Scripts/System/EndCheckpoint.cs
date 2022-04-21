@@ -11,7 +11,9 @@ public class EndCheckpoint : MonoBehaviour
         if (other.GetComponent<Controller>() == null)
             return;
         questReporter.Report();
-        
+        QuestSystem.Instance.CompleteWatingQuest();
+        QuestSystem.Instance.Save();
+
         GameSystem.Instance.StopTimer();
         GameSystem.Instance.FinishRun();
         Destroy(gameObject);
