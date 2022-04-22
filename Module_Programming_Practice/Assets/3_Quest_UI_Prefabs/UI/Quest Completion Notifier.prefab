@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7844800651715378662}
   - component: {fileID: 1151408009416208048}
   - component: {fileID: 9159413750085172567}
+  - component: {fileID: 1759979232747859504}
   m_Layer: 5
   m_Name: Quest Completion Notifier
   m_TagString: Untagged
@@ -29,7 +30,6 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7274741875981990365}
   - {fileID: 6558138860599943695}
@@ -105,6 +105,22 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1759979232747859504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1534555343951921263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbcd8f99da268cd46bc47b604e3ee26f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  titleDescription: Complete! {%dn}
+  titleText: {fileID: 5248418282295760707}
+  rewardText: {fileID: 6804524146365319419}
+  showTime: 3
 --- !u!1 &5440858872931368698
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,7 +149,6 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8790076574697585938}
   m_RootOrder: 1
@@ -268,7 +283,6 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8790076574697585938}
   m_RootOrder: 0

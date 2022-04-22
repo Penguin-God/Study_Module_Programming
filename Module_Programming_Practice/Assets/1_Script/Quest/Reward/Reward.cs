@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Reward : ScriptableObject
 {
     [SerializeField] string description;
+    public string Description => description;
 
     [SerializeField] Sprite icon;
     public Sprite Icon => icon;
