@@ -39,5 +39,5 @@ public class TaskDescriptor : MonoBehaviour
 
     private void UpdateText(Task _task, string _textColorCode, string _successCountColorCode)
         => text.text = $"<color=#{_textColorCode}>● {_task.Description} <color=#{_successCountColorCode}>{_task.CurrentSuccess}</color> / {_task.NeedSuccessToComplete}</color>";
-    
+
 }
