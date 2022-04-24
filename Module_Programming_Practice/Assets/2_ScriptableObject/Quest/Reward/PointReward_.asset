@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PointReward_
   m_EditorClassIdentifier: 
   description: Reward
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: a186f8a87ca4f4d3aa864638ad5dfb65, type: 3}
   quantity: 30

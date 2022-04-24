@@ -43,8 +43,8 @@ public class QuestSystem : MonoBehaviour
 
     public IReadOnlyList<Quest> ActiveQuests => activeQuests;
     public IReadOnlyList<Quest> CompleteQuests => completeQuests;
-    public IReadOnlyList<Quest> ActiveAchievement => activeAchievements;
-    public IReadOnlyList<Quest> CompleteAchievement => completeAchievements;
+    public IReadOnlyList<Quest> ActiveAchievements => activeAchievements;
+    public IReadOnlyList<Quest> CompleteAchievements => completeAchievements;
 
 
     private QuestDatabase questDatabase;

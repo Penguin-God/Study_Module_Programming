@@ -29,7 +29,6 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1876297512622757552}
   m_RootOrder: 1
@@ -131,7 +130,6 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1876297512622757552}
   m_RootOrder: 0
@@ -249,6 +247,7 @@ GameObject:
   - component: {fileID: 1876297512622757552}
   - component: {fileID: 4739992750169630915}
   - component: {fileID: 5595632809291123201}
+  - component: {fileID: 2383314977814887140}
   m_Layer: 5
   m_Name: Achievement View
   m_TagString: Untagged
@@ -266,7 +265,6 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9085624480337300385}
   - {fileID: 8617287647886567298}
@@ -316,3 +314,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2383314977814887140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9140225607327874467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19cb4bd459edb54ebc6ddc32bb78646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  achievementGroup: {fileID: 8617287647886567298}
+  achievementDetailViewPrefab: {fileID: 2998357460197894953, guid: 38eda59c9b61eef4ca195df8afafda75,
+    type: 3}
