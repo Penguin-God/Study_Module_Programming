@@ -26,6 +26,7 @@ public class Test_QuestSystem : MonoBehaviour
             print($"Complete System Count : {_questSystem.CompleteQuests.Count}");
         };
 
+        // Quest ë“±ë¡
         Quest _newQuest = _questSystem.Register(quest);
         _newQuest.OnTaskSuccessChanged += (Quest _quest, Task _task, int _currentSuccess, int _prevSuccess) =>
         {
@@ -36,6 +37,6 @@ public class Test_QuestSystem : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
-            QuestSystem.Instance.ReceiveReport(category, target, 1); // successCountÀÇ 1Àº ¼º°øÇßÀ½À» ÀÇ¹ÌÇÔ
+            QuestSystem.Instance.ReceiveReport(category, target, 1); // successCountì˜ 1ì€ ì„±ê³µí–ˆìŒì„ ì˜ë¯¸í•¨
     }
 }

@@ -77,20 +77,19 @@ public class Quest : ScriptableObject
     [SerializeField] QuestCondition[] cancelConditions;
 
 
-    // code
-
     // 외부에서는 Quest의 이벤트만 구독해두면 여러 task의 성공 변화를 감지할 수 있음
     public event TaskSuccessChangeHandler OnTaskSuccessChanged;
-    public void Raise_OnTaskSuccessChanged(Task _task, int _currentSuccess, int _prevSuccess) 
+    void Raise_OnTaskSuccessChanged(Task _task, int _currentSuccess, int _prevSuccess) 
         => OnTaskSuccessChanged?.Invoke(this, _task, _currentSuccess, _prevSuccess);
 
     public event CompleteHandler OnCompleted;
     public event CanceledHandler OnCanceled;
     public event NewTaskGroupHandler OnNewTaskGroup;
 
-    // Debug.Assert() 인수가 false면 뒤에 문장을 Error문으로 출력. 디버깅 코드로 빌드하면 무시됨
+    // 퀘스트가 등록되면 실행되는 함수로 사실상 Setup, Init과 같은 초기화 함수처럼 사용됨
     public void OnRegister()
     {
+        // Debug.Assert() : 인수가 false면 뒤에 문장을 Error문으로 출력. 디버깅 코드로 빌드하면 무시됨
         Debug.Assert(!IsRegistered, "this quest has already been registered.");
 
         foreach(TaskGroup _taskGroup in taskGroups)
@@ -128,7 +127,7 @@ public class Quest : ScriptableObject
                 OnNewTaskGroup?.Invoke(this, CurrentTaskGroup, _prevTaskGroup);
             }
         }
-        else State = QuestState.Running; // 이미 깬 상태에서 물건 버리는 등 트롤짓하면 다시 Running로 돌아감
+        else State = QuestState.Running; // 이미 깬 상태에서 물건 버리는 등 트롤짓하면 다시 Running으로 돌아감
     }
 
     public void Complete()

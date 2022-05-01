@@ -107,15 +107,14 @@ public class QuestSystem : MonoBehaviour
         return _newQuest;
     }
 
+    public void ReceiveReport(Category _category, TaskTarget _target, int _successCount)
+        => ReceiveReport(_category.CodeName, _target.Value, _successCount);
 
     public void ReceiveReport(string _category, object _target, int _successCount)
     {
         ReceiveReport(activeQuests, _category, _target, _successCount);
         ReceiveReport(activeAchievements, _category, _target, _successCount);
     }
-
-    public void ReceiveReport(Category _category, TaskTarget _target, int _successCount)
-        => ReceiveReport(_category.CodeName, _target.Value, _successCount);
 
     private void ReceiveReport(List<Quest> _quests, string _category, object _target ,int _successCount)
     {
@@ -149,7 +148,6 @@ public class QuestSystem : MonoBehaviour
 
         Destroy(_quest, Time.deltaTime);
     }
-
 
     private void Raise_OnAchievementCompleted(Quest _quest)
     {
