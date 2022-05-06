@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 public class QuestSystem : MonoBehaviour
 {
@@ -172,6 +173,7 @@ public class QuestSystem : MonoBehaviour
 
 
     #region Save And Load
+    [ContextMenu("Test")]
     public void Save()
     {
         JObject _root = new JObject();
@@ -179,12 +181,19 @@ public class QuestSystem : MonoBehaviour
         _root.Add(key_CompleteQuests, CreateSaveDatas(completeQuests));
         _root.Add(key_ActiveAchievement, CreateSaveDatas(activeAchievements));
         _root.Add(key_CompleteAchievement, CreateSaveDatas(completeAchievements));
-        PlayerPrefs.SetString(key_SaveRoot, _root.ToString());
-        PlayerPrefs.Save();
+
+        //PlayerPrefs.SetString(key_SaveRoot, _root.ToString());
+        //PlayerPrefs.Save(); // 원래는 Application Quit시에 자동으로 작동하지만 튕길 수도 있으니 여기에서 사용해줌
+
+        print(_root.ToString());
+        print(JsonConvert.SerializeObject(_root, Formatting.Indented));
+        print(JsonConvert.SerializeObject( activeQuests.Select( x => x.ToSaveData() ).ToArray() , Formatting.Indented));
     }
 
-    public bool Load()
+    private bool Load()
     {
+        // JObject는 Dictionary, JArray는 List 
+        // Dictionary에 List넣을 수 있고 반대도 가능한 것처럼 json클래스들도 서로 넣는거 가능
         if (PlayerPrefs.HasKey(key_SaveRoot))
         {
             JObject _root = JObject.Parse(PlayerPrefs.GetString(key_SaveRoot));
@@ -199,6 +208,8 @@ public class QuestSystem : MonoBehaviour
         return false;
     }
 
+    // 리스트만 할 때는 JsonConvert.SerializeObject()로 해도 잘 되는데 JObject나 JArray에 Add()하니까 이스케이프문이 너무 많이 들어가서 SerializeObject 안 쓰는 듯?
+    // 솔직히 자세한거는 모름
     private JArray CreateSaveDatas(IReadOnlyList<Quest> _quests)
     {
         JArray _saveDatas = new JArray();
@@ -217,6 +228,7 @@ public class QuestSystem : MonoBehaviour
         foreach (var _data in _datas)
         {
             QuestSaveData _saveData = _data.ToObject<QuestSaveData>();
+            // 모든 Quest들이 저장되어 있는 DB에서 찾은 후 Action실행
             Quest _quest = _database.FindQuestBy(_saveData.codeName);
             OnSuccess?.Invoke(_saveData, _quest);
         }
@@ -224,6 +236,7 @@ public class QuestSystem : MonoBehaviour
 
     private void LoadActiveQuest(QuestSaveData _saveData, Quest _quest)
     {
+        // Register() 함수 내에서 업적이랑 퀘스트 구분 되므로 따로 조건문 안 넣어도 됨
         Quest _newQuest = Register(_quest);
         _newQuest.LoadFrom(_saveData);
     }

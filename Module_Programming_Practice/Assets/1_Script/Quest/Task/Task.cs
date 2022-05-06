@@ -25,6 +25,7 @@ public class Task : ScriptableObject
     [Header("Text")]
     [SerializeField] string codeName;
     public string CodeName => codeName;
+
     [SerializeField] string description;
     public string Description => description;
 

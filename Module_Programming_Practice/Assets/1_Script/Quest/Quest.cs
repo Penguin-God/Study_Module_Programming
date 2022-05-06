@@ -72,6 +72,7 @@ public class Quest : ScriptableObject
 
     [Header("Condition")]
     [SerializeField] QuestCondition[] acceptionConditions;
+    // 모든 요소가 true이거나 배열이 비어 있으면 true인 프로퍼티
     public bool IsAcceptionable => acceptionConditions.All(_condition => _condition.IsPass(this));
 
     [SerializeField] QuestCondition[] cancelConditions;
@@ -127,7 +128,7 @@ public class Quest : ScriptableObject
                 OnNewTaskGroup?.Invoke(this, CurrentTaskGroup, _prevTaskGroup);
             }
         }
-        else State = QuestState.Running; // 이미 깬 상태에서 물건 버리는 등 트롤짓하면 다시 Running으로 돌아감
+        else State = QuestState.Running; // 이미 깬 상태에서 물건 버리는 등 트롤짓을 방지하기 위해 완료하지 않으면 무조건 Running으로 세팅
     }
 
     public void Complete()
@@ -180,7 +181,9 @@ public class Quest : ScriptableObject
     {
         codeName = _saveData.codeName;
         State = _saveData.state;
+        currentTaskGroupIndex = _saveData.currentTaskGroupIndex;
 
+        // 이미 클리어한 TaskGroup들은 Clear 해줌
         for (int i = 0; i < _saveData.currentTaskGroupIndex; i++)
         {
             TaskGroup _group = taskGroups[i];
@@ -188,6 +191,7 @@ public class Quest : ScriptableObject
             _group.Complete();
         }
 
+        // 현재 TaskGroup 시작 및 Task들 successCount 세팅
         for (int i = 0; i < _saveData.taskSuccessCounts.Length; i++)
         {
             CurrentTaskGroup.Start();
