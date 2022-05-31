@@ -13,7 +13,6 @@ public class TaskDescriptor : MonoBehaviour
     [SerializeField] Color taskCompleteColor;
     [SerializeField] Color strikeThroughColor; // 착선( 문자를 가로지르는 선, 나무위키에서 많이 쓰는 그거 )
 
-
     public void UpdateText(string _text)
     {
         text.fontStyle = FontStyles.Normal;
@@ -39,5 +38,4 @@ public class TaskDescriptor : MonoBehaviour
 
     private void UpdateText(Task _task, string _textColorCode, string _successCountColorCode)
         => text.text = $"<color=#{_textColorCode}>● {_task.Description} <color=#{_successCountColorCode}>{_task.CurrentSuccess}</color> / {_task.NeedSuccessToComplete}</color>";
-
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 public enum TaskState
 {
@@ -53,6 +54,7 @@ public class Task : ScriptableObject
             {
                 state = (currentSuccess == needSuccessToComplete) ? TaskState.Complete : TaskState.Running;
                 OnSuccessChanged?.Invoke(this, currentSuccess, _prevSuccess);
+                if (state == TaskState.Complete) OnCompleted?.Invoke(this);
             }
         }
     }
@@ -92,6 +94,7 @@ public class Task : ScriptableObject
 
     public void ReceiveReport(int _successCount) => CurrentSuccess = taskAction.Run(this, CurrentSuccess, _successCount);
 
+    public event Action<Task> OnCompleted = null; // TODO : 나중에 Complete 함수 안에 넣기
     public void Complete() => CurrentSuccess = needSuccessToComplete;
 
     // targets 안에 _target과 같은 놈이 있는지 반환하는 함수

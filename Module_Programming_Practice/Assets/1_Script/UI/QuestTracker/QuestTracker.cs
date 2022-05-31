@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 public class QuestTracker : MonoBehaviour
 {
@@ -17,28 +18,37 @@ public class QuestTracker : MonoBehaviour
     public void Setup(Quest _targetQeust, Color _titleColor)
     {
         targetQeust = _targetQeust;
+        SetTitleText(_targetQeust, _titleColor);
+        SubscribeQuest(_targetQeust);
+        UpdateTaskDescriptor(_targetQeust, _targetQeust.TaskGroups[0], null);
+        UpdatePreviousTask(_targetQeust, _targetQeust.TaskGroups);
 
-        questTitleText.text = (_targetQeust.Category == null) ?
-            _targetQeust.DisplayName :
-            $"[{_targetQeust.Category.DisplayName}] {_targetQeust.DisplayName}";
-        questTitleText.color = _titleColor;
-
-        _targetQeust.OnNewTaskGroup += UpdateTaskDescriptor;
-        _targetQeust.OnCompleted += DestroySelf;
-
-        // 최초 Update
-        IReadOnlyList<TaskGroup> _taskGroups = _targetQeust.TaskGroups;
-        UpdateTaskDescriptor(_targetQeust, _taskGroups[0], null);
-
-        // 이전 게임을 플레이할 때 미리 몇몇 Task를 클리어했다면
-        if(_taskGroups[0] != _targetQeust.CurrentTaskGroup)
+        // 중첩 함수....
+        void SetTitleText(Quest _targetQeust, Color _titleColor)
         {
-            for (int i = 1; i < _taskGroups.Count; i++)
-            {
-                TaskGroup _taskGroup = _taskGroups[i];
-                UpdateTaskDescriptor(_targetQeust, _taskGroup, _taskGroups[i - 1]);
+            questTitleText.text = (_targetQeust.Category == null) ?
+                _targetQeust.DisplayName :
+                $"[{_targetQeust.Category.DisplayName}] {_targetQeust.DisplayName}";
 
-                if (_taskGroup == _targetQeust.CurrentTaskGroup) break;
+            questTitleText.color = _titleColor;
+        }
+        void SubscribeQuest(Quest _targetQeust)
+        {
+            _targetQeust.OnNewTaskGroup += UpdateTaskDescriptor;
+            _targetQeust.OnCompleted += DestroySelf;
+        }
+        void UpdatePreviousTask(Quest _targetQeust, IReadOnlyList<TaskGroup> _taskGroups)
+        {
+            // 이전 게임을 플레이할 때 이미 클리어한 테스크가 있다면
+            if (_taskGroups[0] != _targetQeust.CurrentTaskGroup)
+            {
+                for (int i = 1; i < _taskGroups.Count; i++)
+                {
+                    TaskGroup _taskGroup = _taskGroups[i];
+                    UpdateTaskDescriptor(_targetQeust, _taskGroup, _taskGroups[i - 1]);
+
+                    if (_taskGroup == _targetQeust.CurrentTaskGroup) break;
+                }
             }
         }
     }
@@ -51,31 +61,36 @@ public class QuestTracker : MonoBehaviour
             targetQeust.OnCompleted -= DestroySelf;
         }
 
-        foreach(var _pair in taskDescriptorByTask) _pair.Key.OnSuccessChanged -= UpdateText;
+        foreach(var _pair in taskDescriptorByTask)
+        {
+            _pair.Key.OnSuccessChanged -= UpdateTaskText;
+            _pair.Key.OnCompleted -= UpdateCompleteTask;
+        }
     }
 
-    #region call back
+    private void AddTaskDescriptorByTask(Task _task, TaskDescriptor _newDescriptor)
+    {
+        taskDescriptorByTask.Add(_task, _newDescriptor);
+        _newDescriptor.UpdateText(_task);
+    }
+
     void UpdateTaskDescriptor(Quest _quest, TaskGroup _currentTaskGroup, TaskGroup _prevTaskGroup)
     {
-        foreach(Task _task in _currentTaskGroup.Tasks)
-        {
-            TaskDescriptor _newDescriptor = Instantiate(taskDescriptorPrefab, transform);
-            _newDescriptor.UpdateText(_task); // 최초 업데이트
-            _task.OnSuccessChanged += UpdateText;
+        AddNewTaskByDescriptorPair(_currentTaskGroup);
+        SubscribeTaskChanged(_currentTaskGroup.Tasks.ToList());
+        SubscribeTaskCompleted(_currentTaskGroup.Tasks.ToList());
 
-            taskDescriptorByTask.Add(_task, _newDescriptor);
-        }
-
-        if(_prevTaskGroup != null)
-        {
-            foreach (Task _task in _prevTaskGroup.Tasks)
-            {
-                TaskDescriptor _taskDescriptor = taskDescriptorByTask[_task];
-                _taskDescriptor.UpdateTextUsingStrikeThrough(_task);
-            }
-        }
+        // 중첩 함수...
+        void SubscribeTaskChanged(List<Task> tasks) => tasks.ForEach(x => x.OnSuccessChanged += UpdateTaskText);
+        void SubscribeTaskCompleted(List<Task> tasks) => tasks.ForEach(x => x.OnCompleted += UpdateCompleteTask);
+        void AddNewTaskByDescriptorPair(TaskGroup _currentTaskGroup)
+            => _currentTaskGroup.Tasks.ToList().ForEach(x => AddTaskDescriptorByTask(x, Instantiate(taskDescriptorPrefab, transform)));
     }
-    void UpdateText(Task _task, int _currentSuccessCount, int _prevSuccessCount) => taskDescriptorByTask[_task].UpdateText(_task);
+
+    #region only call back
+    void UpdateTaskText(Task _task, int _currentSuccessCount, int _prevSuccessCount) => taskDescriptorByTask[_task].UpdateText(_task);
+    void UpdateCompleteTask(Task task) => taskDescriptorByTask[task].UpdateTextUsingStrikeThrough(task);
+
     private void DestroySelf(Quest _quest) => Destroy(gameObject);
     #endregion
 }
