@@ -49,7 +49,7 @@ public class TaskGroup
     {
         foreach(Task _task in tasks)
         {
-            if (_task.IsTarget(_category, _target))
+            if (_task.IsTarget(_category, _target)) // TODO : 조건 검사 기능 QuestSystem으로 옮기기
                 _task.ReceiveReport(_successCount);
         }
     }

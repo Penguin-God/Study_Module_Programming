@@ -117,6 +117,7 @@ public class QuestSystem : MonoBehaviour
         ReceiveReport(activeAchievements, _category, _target, _successCount);
     }
 
+    // TODO : 리스트를 전부 돌리는 것이 아니라 해당되는 퀘스트만 돌리기
     private void ReceiveReport(List<Quest> _quests, string _category, object _target ,int _successCount)
     {
         // 리스트의 사본을 만들어 돌리는 이유는 complete 시 파괴되도록 이벤트에 등록해두어 반복문 중 quest가 없어지면서 에러가 날 수도 있어서
