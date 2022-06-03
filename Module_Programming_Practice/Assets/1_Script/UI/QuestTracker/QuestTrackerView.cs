@@ -4,18 +4,16 @@ using UnityEngine;
 using System.Linq;
 using System;
 
-
-
 public class QuestTrackerView : MonoBehaviour
 {
     [SerializeField] QuestTracker questTrackerPrefab;
     [SerializeField] CategoryColor[] categoryColors;
 
-    private void Start()
+    private void Awake()
     {
         QuestSystem.Instance.OnQuestRegistered += CreateQuestTracker;
         
-        foreach (Quest _quest in QuestSystem.Instance.ActiveQuests) CreateQuestTracker(_quest);
+        // foreach (Quest _quest in QuestSystem.Instance.ActiveQuests) CreateQuestTracker(_quest);
     }
 
     private void OnDestroy()
@@ -25,13 +23,15 @@ public class QuestTrackerView : MonoBehaviour
     }
 
     void CreateQuestTracker(Quest _quest)
+        => Instantiate(questTrackerPrefab, transform).Setup(_quest, GetCategoryColor(_quest));
+
+    private Color GetCategoryColor(Quest _quest)
     {
         CategoryColor _categoryColor = categoryColors.FirstOrDefault(x => x.category == _quest.Category);
-        Color _color = (_categoryColor.category == null) ? Color.white : _categoryColor.color;
-        Instantiate(questTrackerPrefab, transform).Setup(_quest, _color);
+        return (_categoryColor.category == null) ? Color.white : _categoryColor.color;
     }
 
-    [System.Serializable]
+    [Serializable]
     private struct CategoryColor
     {
         public Category category;

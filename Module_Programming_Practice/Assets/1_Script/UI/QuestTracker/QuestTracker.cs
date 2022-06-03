@@ -19,11 +19,11 @@ public class QuestTracker : MonoBehaviour
     {
         targetQeust = _targetQeust;
         SetTitleText(_targetQeust, _titleColor);
-        SubscribeQuest(_targetQeust);
-        UpdateTaskDescriptor(_targetQeust, _targetQeust.TaskGroups[0], null);
-        UpdatePreviousTask(_targetQeust, _targetQeust.TaskGroups);
+        _targetQeust.OnNewTaskGroup += CreateTaskDescriptor;
+        _targetQeust.OnCompleted += DestroySelf;
+        Create_FirstTaskDescriptor_InQuest(_targetQeust);
+        Create_PreviousClear_TaskDescriptor(_targetQeust, _targetQeust.TaskGroups);
 
-        // 중첩 함수....
         void SetTitleText(Quest _targetQeust, Color _titleColor)
         {
             questTitleText.text = (_targetQeust.Category == null) ?
@@ -32,12 +32,8 @@ public class QuestTracker : MonoBehaviour
 
             questTitleText.color = _titleColor;
         }
-        void SubscribeQuest(Quest _targetQeust)
-        {
-            _targetQeust.OnNewTaskGroup += UpdateTaskDescriptor;
-            _targetQeust.OnCompleted += DestroySelf;
-        }
-        void UpdatePreviousTask(Quest _targetQeust, IReadOnlyList<TaskGroup> _taskGroups)
+        void Create_FirstTaskDescriptor_InQuest(Quest _targetQeust) => CreateTaskDescriptor(_targetQeust, _targetQeust.TaskGroups[0]);
+        void Create_PreviousClear_TaskDescriptor(Quest _targetQeust, IReadOnlyList<TaskGroup> _taskGroups)
         {
             // 이전 게임을 플레이할 때 이미 클리어한 테스크가 있다면
             if (_taskGroups[0] != _targetQeust.CurrentTaskGroup)
@@ -45,7 +41,7 @@ public class QuestTracker : MonoBehaviour
                 for (int i = 1; i < _taskGroups.Count; i++)
                 {
                     TaskGroup _taskGroup = _taskGroups[i];
-                    UpdateTaskDescriptor(_targetQeust, _taskGroup, _taskGroups[i - 1]);
+                    CreateTaskDescriptor(_targetQeust, _taskGroup, _taskGroups[i - 1]);
 
                     if (_taskGroup == _targetQeust.CurrentTaskGroup) break;
                 }
@@ -57,7 +53,7 @@ public class QuestTracker : MonoBehaviour
     {
         if(targetQeust != null)
         {
-            targetQeust.OnNewTaskGroup -= UpdateTaskDescriptor;
+            targetQeust.OnNewTaskGroup -= CreateTaskDescriptor;
             targetQeust.OnCompleted -= DestroySelf;
         }
 
@@ -68,23 +64,20 @@ public class QuestTracker : MonoBehaviour
         }
     }
 
-    private void AddTaskDescriptorByTask(Task _task, TaskDescriptor _newDescriptor)
+    void CreateTaskDescriptor(Quest _quest, TaskGroup _currentTaskGroup, TaskGroup _prevTaskGroup = null)
     {
-        taskDescriptorByTask.Add(_task, _newDescriptor);
-        _newDescriptor.UpdateText(_task);
-    }
-
-    void UpdateTaskDescriptor(Quest _quest, TaskGroup _currentTaskGroup, TaskGroup _prevTaskGroup)
-    {
-        AddNewTaskByDescriptorPair(_currentTaskGroup);
+        _currentTaskGroup.Tasks.ToList().ForEach(x => taskDescriptorByTask.Add(x, InstantiateTaskDescriptor(x)));
         SubscribeTaskChanged(_currentTaskGroup.Tasks.ToList());
         SubscribeTaskCompleted(_currentTaskGroup.Tasks.ToList());
 
-        // 중첩 함수...
+        TaskDescriptor InstantiateTaskDescriptor(Task _task)
+        {
+            TaskDescriptor descriptor = Instantiate(taskDescriptorPrefab, transform);
+            descriptor.UpdateText(_task); // Setup
+            return descriptor;
+        }
         void SubscribeTaskChanged(List<Task> tasks) => tasks.ForEach(x => x.OnSuccessChanged += UpdateTaskText);
         void SubscribeTaskCompleted(List<Task> tasks) => tasks.ForEach(x => x.OnCompleted += UpdateCompleteTask);
-        void AddNewTaskByDescriptorPair(TaskGroup _currentTaskGroup)
-            => _currentTaskGroup.Tasks.ToList().ForEach(x => AddTaskDescriptorByTask(x, Instantiate(taskDescriptorPrefab, transform)));
     }
 
     #region only call back
