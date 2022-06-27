@@ -33,5 +33,16 @@ public class TestUtility : MonoBehaviour
             }
             yield return new WaitForSeconds(reportDelay);
         }
+        GameSystem.Instance.StopTimer();
+        GameSystem.Instance.FinishRun();
+    }
+
+    [ContextMenu("안녕 세상")]
+    void TestDict()
+    {
+        Dictionary<int, int> IntInt = new Dictionary<int, int>();
+        IntInt.Add(1, 1);
+        IntInt.Remove(111);
+        print(IntInt[111]);
     }
 }

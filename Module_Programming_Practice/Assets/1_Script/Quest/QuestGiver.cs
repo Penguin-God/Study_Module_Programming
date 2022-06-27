@@ -6,7 +6,7 @@ public class QuestGiver : MonoBehaviour
 {
     [SerializeField] Quest[] quests;
 
-    private void Start()
+    private void Awake()
     {
         foreach(Quest _quest in quests)
         {
