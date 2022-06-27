@@ -12,7 +12,7 @@ struct MarkerMaterialData
 
 public class QuestTargetMarker : MonoBehaviour
 {
-    List<KeyValuePair<Quest, Task>> targetTaskKey_QuestValueList = new List<KeyValuePair<Quest, Task>>();
+    List<Quest> trackQuests = new List<Quest>();
     Dictionary<Quest, Task> targetTaskByQuest = new Dictionary<Quest, Task>();
 
     private void Awake()
@@ -45,13 +45,16 @@ public class QuestTargetMarker : MonoBehaviour
     private void OnDestroy()
     {
         QuestSystem.Instance.OnQuestRegistered -= TryAddTargetQuest;
-        foreach(KeyValuePair<Quest, Task> _pair in targetTaskByQuest)
-        {
-            _pair.Key.OnNewTaskGroup -= UpdateTargetTask;
-            _pair.Key.OnCompleted -= RemoveTargetQuest;
-        }
-    }
 
+        foreach (Quest quest in trackQuests)
+        {
+            quest.OnNewTaskGroup -= UpdateTargetTask;
+            quest.OnCompleted -= RemoveTargetQuest;
+        }
+        
+        foreach (Task task in trackTasks)
+            task.OnCompleted -= RemoveTargetTask;
+    }
 
     [SerializeField] TaskTarget target; // 이 target을 가진 task들을 가져와 감시함
     void TryAddTargetQuest(Quest _quest)
@@ -62,25 +65,26 @@ public class QuestTargetMarker : MonoBehaviour
             _quest.OnCompleted += RemoveTargetQuest;
 
             if(_quest.CurrentTaskGroup.FindTaskWithTarget(target))
-                UpdateTargetTask(_quest, _quest.CurrentTaskGroup.FindTaskWithTarget(target));
+                UpdateTargetTask(_quest);
         }
     }
 
-    void UpdateTargetTask(Quest _quest, Task targetTask)
+    void UpdateTargetTask(Quest _quest)
     {
+        Task targetTask = _quest.CurrentTaskGroup.FindTaskWithTarget(target);
         if (targetTask != null)
         {
-            if (targetTaskByQuest.ContainsKey(_quest) == false)
-                targetTaskByQuest.Add(_quest, targetTask);
-            AddTargetTask(targetTask);
+            if (trackQuests.Contains(_quest) == false)
+                trackQuests.Add(_quest);
 
+            AddTargetTask(targetTask);
             targetTask.OnCompleted += RemoveTargetTask;
         }
     }
 
     [SerializeField] MarkerMaterialData[] markerMaterialDatas;
     Renderer myRenderer;
-    [SerializeField] List<Task> trackTasks = new List<Task>();
+    List<Task> trackTasks = new List<Task>();
     void AddTargetTask(Task _task)
     {
         if (_task.State == TaskState.Running)
@@ -93,7 +97,7 @@ public class QuestTargetMarker : MonoBehaviour
 
     #region Only Callback function
     void UpdateTargetTask(Quest _quest, TaskGroup _currentTaskGroup, TaskGroup _prevTaskGroup = null)
-        => UpdateTargetTask(_quest, _currentTaskGroup.FindTaskWithTarget(target));
+        => UpdateTargetTask(_quest);
 
     void RemoveTargetTask(Task _task)
     {
@@ -104,8 +108,8 @@ public class QuestTargetMarker : MonoBehaviour
 
     void RemoveTargetQuest(Quest _quest)
     {
-        if (targetTaskByQuest.ContainsKey(_quest))
-            targetTaskByQuest.Remove(_quest);
+        if (trackQuests.Contains(_quest))
+            trackQuests.Remove(_quest);
     }
     #endregion
 }
