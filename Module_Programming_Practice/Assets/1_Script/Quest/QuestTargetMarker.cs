@@ -49,7 +49,6 @@ public class QuestTargetMarker : MonoBehaviour
         {
             _pair.Key.OnNewTaskGroup -= UpdateTargetTask;
             _pair.Key.OnCompleted -= RemoveTargetQuest;
-            _pair.Value.OnStateChanged -= UpdateRunningTargetTaskCount;
         }
     }
 
@@ -73,33 +72,35 @@ public class QuestTargetMarker : MonoBehaviour
         {
             if (targetTaskByQuest.ContainsKey(_quest) == false)
                 targetTaskByQuest.Add(_quest, targetTask);
-            targetTask.OnStateChanged += UpdateRunningTargetTaskCount;
+            AddTargetTask(targetTask);
 
-            UpdateRunningTargetTaskCount(targetTask, targetTask.State);
+            targetTask.OnCompleted += RemoveTargetTask;
         }
     }
 
     [SerializeField] MarkerMaterialData[] markerMaterialDatas;
     Renderer myRenderer;
     [SerializeField] List<Task> trackTasks = new List<Task>();
-    void UpdateRunningTargetTaskCount(Task _task, TaskState _currentState, TaskState _prevState = TaskState.Inactive)
+    void AddTargetTask(Task _task)
     {
-        if (_currentState == TaskState.Running)
+        if (_task.State == TaskState.Running)
         {
             myRenderer.material = markerMaterialDatas.First(x => x.category == _task.Category).markerMaterial;
             trackTasks.Add(_task);
+            gameObject.SetActive(true);
         }
-        else trackTasks.Remove(_task);
-        
-
-        gameObject.SetActive(trackTasks.Count != 0);
     }
-
-
 
     #region Only Callback function
     void UpdateTargetTask(Quest _quest, TaskGroup _currentTaskGroup, TaskGroup _prevTaskGroup = null)
         => UpdateTargetTask(_quest, _currentTaskGroup.FindTaskWithTarget(target));
+
+    void RemoveTargetTask(Task _task)
+    {
+        trackTasks.Remove(_task);
+        gameObject.SetActive(trackTasks.Count != 0);
+        if (trackTasks.Count == 0) gameObject.SetActive(false);
+    }
 
     void RemoveTargetQuest(Quest _quest)
     {

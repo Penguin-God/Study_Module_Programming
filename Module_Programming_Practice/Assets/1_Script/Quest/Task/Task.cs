@@ -42,6 +42,8 @@ public class Task : ScriptableObject
     public int NeedSuccessToComplete => needSuccessToComplete;
 
     public event SuccessChangedHandler OnSuccessChanged = null;
+    public event Action<Task> OnCompleted = null;
+
     private int currentSuccess;
     public int CurrentSuccess
     {
@@ -94,8 +96,6 @@ public class Task : ScriptableObject
     }
 
     public void ReceiveReport(int _successCount) => CurrentSuccess = taskAction.Run(this, CurrentSuccess, _successCount);
-
-    public event Action<Task> OnCompleted = null; // TODO : 나중에 Complete 함수 안에 넣기
     public void Complete() => CurrentSuccess = needSuccessToComplete;
 
     // targets 안에 _target과 같은 놈이 있는지 반환하는 함수
