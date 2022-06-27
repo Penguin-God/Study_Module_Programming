@@ -13,7 +13,6 @@ public class QuestCompletionNotifier : MonoBehaviour
     [SerializeField] float showTime = 3f;
 
     Queue<Quest> reservedQuests = new Queue<Quest>();
-    StringBuilder stringBuilder = new StringBuilder();
 
     private void Start()
     {
@@ -48,6 +47,7 @@ public class QuestCompletionNotifier : MonoBehaviour
     IEnumerator Co_ShowNotice()
     {
         var _waitSceond = new WaitForSeconds(showTime);
+        
 
         while (reservedQuests.Count > 0)
         {
@@ -55,19 +55,33 @@ public class QuestCompletionNotifier : MonoBehaviour
             // %{dn} : 그냥 기호, text가 나왔으면 하는 곳에 적으면 text가 Replace되는 기법
             titleText.text = titleDescription.Replace("%{dn}", _quest.DisplayName);
 
-            // stringBuilder이 성능 좋다네요~ for문에 문자열 연산하면 준내 느리답니다~
-            foreach(Reward _reward in _quest.Rewards)
-            {
-                stringBuilder.Append(_reward.Description);
-                stringBuilder.Append(" ");
-                stringBuilder.Append(_reward.Quantity);
-                stringBuilder.Append(" ");
-            }
-            rewardText.text = stringBuilder.ToString();
-            stringBuilder.Clear();
+            //foreach(Reward _reward in _quest.Rewards)
+            //{
+            //    stringBuilder.Append(_reward.Description);
+            //    stringBuilder.Append(" ");
+            //    stringBuilder.Append(_reward.Quantity);
+            //    stringBuilder.Append(" ");
+            //}
+            //rewardText.text = stringBuilder.ToString();
+            //stringBuilder.Clear();
+            rewardText.text = GetRewardsText(_quest);
             yield return _waitSceond;
         }
 
         gameObject.SetActive(false);
+    }
+
+    string GetRewardsText(Quest _quest)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        // stringBuilder이 성능 좋다네요~ for문에 문자열 연산하면 준내 느리답니다~
+        foreach (Reward _reward in _quest.Rewards)
+        {
+            stringBuilder.Append(_reward.Description);
+            stringBuilder.Append(" ");
+            stringBuilder.Append(_reward.Quantity);
+            stringBuilder.Append(" ");
+        }
+        return stringBuilder.ToString();
     }
 }

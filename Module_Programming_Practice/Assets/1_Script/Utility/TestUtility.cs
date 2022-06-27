@@ -33,6 +33,9 @@ public class TestUtility : MonoBehaviour
             }
             yield return new WaitForSeconds(reportDelay);
         }
+        QuestSystem.Instance.CompleteWatingQuest();
+        QuestSystem.Instance.Save();
+
         GameSystem.Instance.StopTimer();
         GameSystem.Instance.FinishRun();
     }

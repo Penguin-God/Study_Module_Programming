@@ -183,8 +183,8 @@ public class QuestSystem : MonoBehaviour
         _root.Add(key_ActiveAchievement, CreateSaveDatas(activeAchievements));
         _root.Add(key_CompleteAchievement, CreateSaveDatas(completeAchievements));
 
-        //PlayerPrefs.SetString(key_SaveRoot, _root.ToString());
-        //PlayerPrefs.Save(); // 원래는 Application Quit시에 자동으로 작동하지만 튕길 수도 있으니 여기에서 사용해줌
+        PlayerPrefs.SetString(key_SaveRoot, _root.ToString());
+        PlayerPrefs.Save(); // 원래는 Application Quit시에 자동으로 작동하지만 튕길 수도 있으니 여기에서 사용해줌
 
         print(_root.ToString());
         print(JsonConvert.SerializeObject(_root, Formatting.Indented));
