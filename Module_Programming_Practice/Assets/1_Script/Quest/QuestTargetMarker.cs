@@ -12,8 +12,8 @@ struct MarkerMaterialData
 
 public class QuestTargetMarker : MonoBehaviour
 {
+    List<KeyValuePair<Quest, Task>> targetTaskKey_QuestValueList = new List<KeyValuePair<Quest, Task>>();
     Dictionary<Quest, Task> targetTaskByQuest = new Dictionary<Quest, Task>();
-    int currentRunningTargetTaskCount;
 
     private void Awake()
     {
@@ -79,28 +79,32 @@ public class QuestTargetMarker : MonoBehaviour
         }
     }
 
-    Renderer myRenderer;
     [SerializeField] MarkerMaterialData[] markerMaterialDatas;
+    Renderer myRenderer;
+    [SerializeField] List<Task> trackTasks = new List<Task>();
     void UpdateRunningTargetTaskCount(Task _task, TaskState _currentState, TaskState _prevState = TaskState.Inactive)
     {
         if (_currentState == TaskState.Running)
         {
             myRenderer.material = markerMaterialDatas.First(x => x.category == _task.Category).markerMaterial;
-            currentRunningTargetTaskCount++;
+            trackTasks.Add(_task);
         }
-        else currentRunningTargetTaskCount--;
+        else trackTasks.Remove(_task);
+        
 
-        gameObject.SetActive(currentRunningTargetTaskCount != 0);
+        gameObject.SetActive(trackTasks.Count != 0);
     }
+
+
+
+    #region Only Callback function
+    void UpdateTargetTask(Quest _quest, TaskGroup _currentTaskGroup, TaskGroup _prevTaskGroup = null)
+        => UpdateTargetTask(_quest, _currentTaskGroup.FindTaskWithTarget(target));
 
     void RemoveTargetQuest(Quest _quest)
     {
         if (targetTaskByQuest.ContainsKey(_quest))
             targetTaskByQuest.Remove(_quest);
     }
-
-    #region Callback function
-    void UpdateTargetTask(Quest _quest, TaskGroup _currentTaskGroup, TaskGroup _prevTaskGroup = null)
-        => UpdateTargetTask(_quest, _currentTaskGroup.FindTaskWithTarget(target));
     #endregion
 }

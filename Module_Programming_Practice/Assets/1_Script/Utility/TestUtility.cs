@@ -40,9 +40,8 @@ public class TestUtility : MonoBehaviour
     [ContextMenu("안녕 세상")]
     void TestDict()
     {
-        Dictionary<int, int> IntInt = new Dictionary<int, int>();
-        IntInt.Add(1, 1);
-        IntInt.Remove(111);
-        print(IntInt[111]);
+        List<int> list = new List<int>();
+        list.Add(33);
+        list.Remove(121412313);
     }
 }

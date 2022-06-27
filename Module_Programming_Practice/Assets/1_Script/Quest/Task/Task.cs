@@ -52,9 +52,9 @@ public class Task : ScriptableObject
             currentSuccess = Mathf.Clamp(value, 0 ,needSuccessToComplete);
             if(_prevSuccess != currentSuccess) // 성공 횟수가 변했다면
             {
-                state = (currentSuccess == needSuccessToComplete) ? TaskState.Complete : TaskState.Running;
+                State = (currentSuccess == needSuccessToComplete) ? TaskState.Complete : TaskState.Running;
                 OnSuccessChanged?.Invoke(this, currentSuccess, _prevSuccess);
-                if (state == TaskState.Complete) OnCompleted?.Invoke(this);
+                if (State == TaskState.Complete) OnCompleted?.Invoke(this);
             }
         }
     }
@@ -68,7 +68,8 @@ public class Task : ScriptableObject
         {
             TaskState _prevState = state;
             state = value;
-            OnStateChanged?.Invoke(this, state, _prevState);
+            if(_prevState != state)
+                OnStateChanged?.Invoke(this, state, _prevState);
         }
     }
 
