@@ -20,9 +20,11 @@ public class QuestTracker : MonoBehaviour
         targetQeust = _targetQeust;
         SetTitleText(_targetQeust, _titleColor);
         _targetQeust.OnNewTaskGroup += CreateTaskDescriptor;
+        _targetQeust.OnNewTaskGroup += UpdateCompleteTask;
         _targetQeust.OnCompleted += DestroySelf;
         Create_FirstTaskDescriptor_InQuest(_targetQeust);
         Create_PreviousClear_TaskDescriptor(_targetQeust, _targetQeust.TaskGroups);
+
 
         void SetTitleText(Quest _targetQeust, Color _titleColor)
         {
@@ -54,13 +56,13 @@ public class QuestTracker : MonoBehaviour
         if(targetQeust != null)
         {
             targetQeust.OnNewTaskGroup -= CreateTaskDescriptor;
+            targetQeust.OnNewTaskGroup -= UpdateCompleteTask;
             targetQeust.OnCompleted -= DestroySelf;
         }
 
         foreach(var _pair in taskDescriptorByTask)
         {
             _pair.Key.OnSuccessChanged -= UpdateTaskText;
-            _pair.Key.OnCompleted -= UpdateCompleteTask;
         }
     }
 
@@ -68,7 +70,6 @@ public class QuestTracker : MonoBehaviour
     {
         _currentTaskGroup.Tasks.ToList().ForEach(x => taskDescriptorByTask.Add(x, InstantiateTaskDescriptor(x)));
         SubscribeTaskChanged(_currentTaskGroup.Tasks.ToList());
-        SubscribeTaskCompleted(_currentTaskGroup.Tasks.ToList());
 
         TaskDescriptor InstantiateTaskDescriptor(Task _task)
         {
@@ -77,12 +78,12 @@ public class QuestTracker : MonoBehaviour
             return descriptor;
         }
         void SubscribeTaskChanged(List<Task> tasks) => tasks.ForEach(x => x.OnSuccessChanged += UpdateTaskText);
-        void SubscribeTaskCompleted(List<Task> tasks) => tasks.ForEach(x => x.OnCompleted += UpdateCompleteTask);
     }
 
     #region only call back
     void UpdateTaskText(Task _task, int _currentSuccessCount, int _prevSuccessCount) => taskDescriptorByTask[_task].UpdateText(_task);
-    void UpdateCompleteTask(Task task) => taskDescriptorByTask[task].UpdateTextUsingStrikeThrough(task);
+    void UpdateCompleteTask(Quest _quest, TaskGroup _currentTaskGroup, TaskGroup _prevTaskGroup) 
+        => _prevTaskGroup.Tasks.ToList().ForEach(x => taskDescriptorByTask[x].UpdateTextUsingStrikeThrough(x));
 
     private void DestroySelf(Quest _quest) => Destroy(gameObject);
     #endregion
