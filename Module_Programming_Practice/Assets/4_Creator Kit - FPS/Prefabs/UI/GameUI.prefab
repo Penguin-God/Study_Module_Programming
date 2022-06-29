@@ -5470,6 +5470,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 497096585489741718, guid: 89a530438a09a9143985907ee2fe04d7,
+        type: 3}
+      propertyPath: tabGroup
+      value: 
+      objectReference: {fileID: 8359738478355898687}
     - target: {fileID: 2197416578827569318, guid: 89a530438a09a9143985907ee2fe04d7,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -5510,6 +5515,11 @@ PrefabInstance:
       propertyPath: questDetailView
       value: 
       objectReference: {fileID: 6842242342607324181}
+    - target: {fileID: 4189051842506292272, guid: 89a530438a09a9143985907ee2fe04d7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4572441088404888945, guid: 89a530438a09a9143985907ee2fe04d7,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -5715,6 +5725,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5700952135738802228, guid: 89a530438a09a9143985907ee2fe04d7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6356727453516242277, guid: 89a530438a09a9143985907ee2fe04d7,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -5789,6 +5804,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b83f6aea4ba865249bf1a75b7385d910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8359738478355898687 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3175403084100833980, guid: 89a530438a09a9143985907ee2fe04d7,
+    type: 3}
+  m_PrefabInstance: {fileID: 6346290531962975107}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &7103126815292507802

@@ -7,15 +7,11 @@ using UnityEngine.Events;
 public class QuestView : MonoBehaviour
 {
     [SerializeField] QuestListViewController questListViewController;
-    [SerializeField] QuestDetailView questDetailView;
-
+    // [SerializeField] QuestDetailView questDetailView;
 
     [SerializeField] ToggleGroup tabGroup;
     [SerializeField] QuestListView activeQuestListView;
     [SerializeField] QuestListView completedQuestListView;
-
-    public IEnumerable<Toggle> Tabs => tabGroup.ActiveToggles();
-
     
     public void _RemoveQuest_From_ActiveQuestListView(Quest _quest)
         => activeQuestListView.RemoveElement(_quest);
@@ -29,13 +25,13 @@ public class QuestView : MonoBehaviour
 
         _questSystem.OnQuestCompleted += RemoveQuest_From_ActiveQuestListView;
         _questSystem.OnQuestCompleted += AddCompleteQuestElement;
-        _questSystem.OnQuestCompleted += HideDetail;
+        //_questSystem.OnQuestCompleted += HideDetail;
 
-        _questSystem.OnQuestCanceled += HideDetail;
+        //_questSystem.OnQuestCanceled += HideDetail;
         _questSystem.OnQuestCanceled += RemoveQuest_From_ActiveQuestListView;
 
-        foreach (var _tab in questListViewController.Tabs)
-            _tab.onValueChanged.AddListener(HideDetail);
+        //foreach (var _tab in questListViewController.Tabs)
+        //    _tab.onValueChanged.AddListener(HideDetail);
 
         gameObject.SetActive(false);
 
@@ -61,16 +57,16 @@ public class QuestView : MonoBehaviour
 
         _questSystem.OnQuestCompleted -= RemoveQuest_From_ActiveQuestListView;
         _questSystem.OnQuestCompleted -= AddCompleteQuestElement;
-        _questSystem.OnQuestCompleted -= HideDetail;
+        //_questSystem.OnQuestCompleted -= HideDetail;
 
-        _questSystem.OnQuestCanceled -= HideDetail;
+        //_questSystem.OnQuestCanceled -= HideDetail;
         _questSystem.OnQuestCanceled -= RemoveQuest_From_ActiveQuestListView;
     }
 
     private void OnEnable()
     {
-        if (questDetailView.Target != null)
-            questDetailView.Show(questDetailView.Target); // 내용 업데이트
+        // if (questDetailView.Target != null)
+        //    questDetailView.Show(questDetailView.Target); // 내용 업데이트
     }
 
     private void Update()
@@ -87,21 +83,21 @@ public class QuestView : MonoBehaviour
 
 
     #region Only Callback Function
-    private void HideDetail(Quest _quest)
-    {
-        if (questDetailView.Target == _quest)
-            questDetailView.Hide();
-    }
+    //private void HideDetail(Quest _quest)
+    //{
+    //    if (questDetailView.Target == _quest)
+    //        questDetailView.Hide();
+    //}
 
-    private void HideDetail(bool _isOn) => questDetailView.Hide();
+    // private void HideDetail(bool _isOn) => questDetailView.Hide();
 
     private void RemoveQuest_From_ActiveQuestListView(Quest _quest)
     {
         // activeQuestListView.RemoveElement(_quest);
 
         questListViewController.RemoveQuest_From_ActiveQuestListView(_quest);
-        if (questDetailView.Target == null)
-            questDetailView.Hide();
+        //if (questDetailView.Target == null)
+        //    questDetailView.Hide();
     }
 
     #endregion

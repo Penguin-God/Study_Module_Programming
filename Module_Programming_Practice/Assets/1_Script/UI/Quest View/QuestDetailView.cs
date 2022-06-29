@@ -8,7 +8,7 @@ public class QuestDetailView : MonoBehaviour
 {
     [SerializeField] GameObject displayGroup;
     [SerializeField] Button cancelButton;
-
+    
     [Header("퀘스트 설명")]
     [SerializeField] TextMeshProUGUI title;
     [SerializeField] TextMeshProUGUI description;
@@ -26,18 +26,40 @@ public class QuestDetailView : MonoBehaviour
     [SerializeField] List<TaskDescriptor> taskDescriptorPool;
     [SerializeField] List<TextMeshProUGUI> rewardDescriptionPool;
 
+    [SerializeField] ToggleGroup tabGroup;
+
     public Quest Target { get; private set; }
+
+    private void OnEnable()
+    {
+        if (Target != null)
+            Show(Target); // 내용 업데이트
+    }
 
     private void Awake()
     {
         taskDescriptorPool = CreatePool(taskDescriptorPrefab, taskDescriptorPoolCount, taskDescriptorGroup);
         rewardDescriptionPool = CreatePool(rewardDescriptionPrefab, rewardDescriptionPoolCount, rewardDescriptionGroup);
+
         displayGroup.SetActive(false);
     }
 
     private void Start()
     {
+        QuestSystem.Instance.OnQuestCompleted += HideDetail;
+        QuestSystem.Instance.OnQuestCanceled += HideDetail;
+
+        foreach (var _tab in tabGroup.ActiveToggles())
+            _tab.onValueChanged.AddListener(HideDetail);
+
         cancelButton.onClick.AddListener(CancelQuest);
+    }
+
+    void OnDestroy()
+    {
+        if (QuestSystem.Instance == null) return;
+        QuestSystem.Instance.OnQuestCompleted -= HideDetail;
+        QuestSystem.Instance.OnQuestCanceled -= HideDetail;
     }
 
     List<T> CreatePool<T>(T _prefab, int _count, RectTransform _parent) where T : MonoBehaviour
@@ -126,4 +148,14 @@ public class QuestDetailView : MonoBehaviour
         displayGroup.SetActive(false);
         cancelButton.gameObject.SetActive(false);
     }
+
+    #region Only Callback Function
+    void HideDetail(Quest _quest)
+    {
+        if (Target == _quest) Hide();
+    }
+
+    void HideDetail(bool click) => Hide();
+
+    #endregion
 }
