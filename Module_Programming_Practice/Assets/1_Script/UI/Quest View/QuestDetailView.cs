@@ -61,45 +61,63 @@ public class QuestDetailView : MonoBehaviour
     public void Show(Quest _quest)
     {
         displayGroup.SetActive(true);
-        Target = _quest;
-
-        title.text = _quest.DisplayName;
-        description.text = _quest.Description;
+        SetQuestStatus();
 
         int _taskIndex = 0;
-        foreach(TaskGroup _taskGroup in _quest.TaskGroups)
-        {
-            foreach (Task _task in _taskGroup.Tasks)
-            {
-                TaskDescriptor _poolObject = taskDescriptorPool[_taskIndex++];
-                _poolObject.gameObject.SetActive(true);
+        ShowTaskStatus();
+        InActivePoolObject();
 
-                if (_taskGroup.IsComplete) _poolObject.UpdateTextUsingStrikeThrough(_task);
-                else if (_taskGroup == _quest.CurrentTaskGroup) _poolObject.UpdateText(_task);
-                else _poolObject.UpdateText("● ??????????");
-            }
-        }
-
-        // 미사용 pool 오브젝트 비활성화
-        for (int i = _taskIndex; i < taskDescriptorPool.Count; i++)
-            taskDescriptorPool[i].gameObject.SetActive(false);
-
-        IReadOnlyList<Reward> _rewards = _quest.Rewards;
-        int _rewardCount = _rewards.Count;
-        for (int i = 0; i < rewardDescriptionPoolCount; i++)
-        {
-            TextMeshProUGUI _poolObject = rewardDescriptionPool[i];
-            if (i < _rewardCount)
-            {
-                Reward _reward = _rewards[i];
-                _poolObject.text = $"● {_reward.Description} +{_reward.Quantity}";
-                _poolObject.gameObject.SetActive(true);
-            }
-            else
-                _poolObject.gameObject.SetActive(false);
-        }
-
+        ShowRewards();
         cancelButton.gameObject.SetActive(_quest.IsCancelable && !_quest.IsComplete);
+
+
+        void SetQuestStatus()
+        {
+            Target = _quest;
+            title.text = _quest.DisplayName;
+            description.text = _quest.Description;
+        }
+
+        void ShowTaskStatus()
+        {
+            foreach (TaskGroup _taskGroup in _quest.TaskGroups)
+            {
+                foreach (Task _task in _taskGroup.Tasks)
+                    SetTaskDescriptor(_taskGroup, _task, taskDescriptorPool[_taskIndex++]);
+            }
+
+            void SetTaskDescriptor(TaskGroup _taskGroup, Task _task, TaskDescriptor descriptor)
+            {
+                descriptor.gameObject.SetActive(true);
+
+                if (_taskGroup.IsComplete) descriptor.UpdateTextUsingStrikeThrough(_task);
+                else if (_taskGroup == _quest.CurrentTaskGroup) descriptor.UpdateText(_task);
+                else descriptor.UpdateText("● ??????????");
+            }
+        }
+
+        void InActivePoolObject()
+        {
+            for (int i = _taskIndex; i < taskDescriptorPool.Count; i++)
+                taskDescriptorPool[i].gameObject.SetActive(false);
+        }
+
+        void ShowRewards()
+        {
+            for (int i = 0; i < rewardDescriptionPoolCount; i++)
+                SetRewardText(rewardDescriptionPool[i], i);
+
+            void SetRewardText(TextMeshProUGUI rewardText, int i)
+            {
+                if (i < _quest.Rewards.Count)
+                {
+                    rewardText.text = $"● {_quest.Rewards[i].Description} +{_quest.Rewards[i].Quantity}";
+                    rewardText.gameObject.SetActive(true);
+                }
+                else
+                    rewardText.gameObject.SetActive(false);
+            }
+        }
     }
 
     public void Hide()

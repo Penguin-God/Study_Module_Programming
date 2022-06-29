@@ -15,12 +15,14 @@ public class QuestListView : MonoBehaviour
     {
         TextMeshProUGUI _element = Instantiate(elementPrefab, transform);
         _element.text = _quest.DisplayName;
-
-        Toggle _toggle = _element.GetComponent<Toggle>();
-        _toggle.group = toggleGroup;
-        _toggle.onValueChanged.AddListener(_OnCilcked);
-
+        SetToggle(_element.GetComponent<Toggle>());
         elementByQuest.Add(_quest, _element.gameObject);
+
+        void SetToggle(Toggle toggle)
+        {
+            toggle.group = toggleGroup;
+            toggle.onValueChanged.AddListener(_OnCilcked);
+        }
     }
 
     public void RemoveElement(Quest _quest)
