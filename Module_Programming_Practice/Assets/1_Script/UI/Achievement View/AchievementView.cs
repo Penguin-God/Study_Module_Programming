@@ -9,7 +9,6 @@ public class AchievementView : MonoBehaviour
 
     private void Start()
     {
-        var _questSystem = QuestSystem.Instance;
         CreateDetailViews(QuestSystem.Instance.ActiveAchievements);
         CreateDetailViews(QuestSystem.Instance.CompleteAchievements);
 

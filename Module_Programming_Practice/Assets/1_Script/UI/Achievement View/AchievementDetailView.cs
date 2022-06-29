@@ -21,18 +21,22 @@ public class AchievementDetailView : MonoBehaviour
         achievementIcon.sprite = _achievement.Icon;
         titleText.text = _achievement.DisplayName;
 
-        Task _task = _achievement.CurrentTaskGroup.Tasks[0];
-        description.text = BuildTaskDescription(_task);
+        SetTaskDescription(_achievement.CurrentTaskGroup.Tasks[0]);
+        SetRewardInfomation(_achievement.Rewards[0]);
+        SetCompletionScreen();
+        SetEvent();
 
-        Reward _reward = _achievement.Rewards[0];
-        rewardIcon.sprite = _reward.Icon;
-        rewardText.text = $"{_reward.Description} +{_reward.Quantity}";
-
-        if (_achievement.IsComplete)
-            completionScreen.SetActive(true);
-        else
+        void SetTaskDescription(Task task) => description.text = BuildTaskDescription(task);
+        void SetRewardInfomation(Reward _reward)
         {
-            completionScreen.SetActive(false);
+            rewardIcon.sprite = _reward.Icon;
+            rewardText.text = $"{_reward.Description} +{_reward.Quantity}";
+        }
+        void SetCompletionScreen() => completionScreen.SetActive(_achievement.IsComplete);
+        void SetEvent()
+        {
+            if (_achievement.IsComplete) return;
+
             _achievement.OnTaskSuccessChanged += UpdateDescription;
             _achievement.OnCompleted += ShowCompletionScreen;
         }
@@ -50,8 +54,8 @@ public class AchievementDetailView : MonoBehaviour
     private void UpdateDescription(Quest _achievement, Task _task, int _currentSuccess, int _prevSuccess)
         => description.text = BuildTaskDescription(_task);
 
+    private string BuildTaskDescription(Task _task) => $"{_task.Description} {_task.CurrentSuccess} / {_task.NeedSuccessToComplete}";
+
     private void ShowCompletionScreen(Quest _achievement)
         => completionScreen.SetActive(true);
-
-    private string BuildTaskDescription(Task _task) => $"{_task.Description} {_task.CurrentSuccess} / {_task.NeedSuccessToComplete}"; 
 }
