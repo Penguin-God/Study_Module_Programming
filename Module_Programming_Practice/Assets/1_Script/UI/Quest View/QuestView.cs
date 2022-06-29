@@ -16,36 +16,18 @@ public class QuestView : MonoBehaviour
 
     public IEnumerable<Toggle> Tabs => tabGroup.ActiveToggles();
 
-    public void AddQuest_To_ActiveQuestListView(Quest _quest, UnityAction<bool> _OnClicked)
-        => activeQuestListView.AddElement(_quest, _OnClicked);
-
+    
     public void _RemoveQuest_From_ActiveQuestListView(Quest _quest)
         => activeQuestListView.RemoveElement(_quest);
-
-    public void AddQuest_To_CompletedQuestListView(Quest _quest, UnityAction<bool> _OnClicked)
-        => completedQuestListView.AddElement(_quest, _OnClicked);
 
     private void Start()
     {
         QuestSystem _questSystem = QuestSystem.Instance;
+        SetupElement();
 
-        foreach (Quest _quest in _questSystem.ActiveQuests)
-        {
-            AddActiveQuestElement(_quest);
-            //AddQuest_To_ActiveQuestListView(_quest);
-        }
-
-        foreach (Quest _quest in _questSystem.CompleteQuests)
-        {
-            AddCompleteQuestElement(_quest);
-            //AddQuest_To_completedQuestListView(_quest);
-        }
-
-        //_questSystem.OnQuestRegistered += AddQuest_To_ActiveQuestListView;
         _questSystem.OnQuestRegistered += AddActiveQuestElement;
 
         _questSystem.OnQuestCompleted += RemoveQuest_From_ActiveQuestListView;
-        //_questSystem.OnQuestCompleted += AddQuest_To_completedQuestListView;
         _questSystem.OnQuestCompleted += AddCompleteQuestElement;
         _questSystem.OnQuestCompleted += HideDetail;
 
@@ -59,6 +41,15 @@ public class QuestView : MonoBehaviour
 
         // 추가
         //_questSystem.OnQuestCompleted += activeQuestListView.RemoveElement;
+
+        void SetupElement()
+        {
+            foreach (Quest _quest in _questSystem.ActiveQuests)
+                AddActiveQuestElement(_quest);
+
+            foreach (Quest _quest in _questSystem.CompleteQuests)
+                AddCompleteQuestElement(_quest);
+        }
     }
 
     private void OnDestroy()
@@ -66,11 +57,9 @@ public class QuestView : MonoBehaviour
         QuestSystem _questSystem = QuestSystem.Instance;
         if (_questSystem == null) return;
 
-        //_questSystem.OnQuestRegistered -= AddQuest_To_ActiveQuestListView;
         _questSystem.OnQuestRegistered -= AddActiveQuestElement;
 
         _questSystem.OnQuestCompleted -= RemoveQuest_From_ActiveQuestListView;
-        //_questSystem.OnQuestCompleted -= AddQuest_To_completedQuestListView;
         _questSystem.OnQuestCompleted -= AddCompleteQuestElement;
         _questSystem.OnQuestCompleted -= HideDetail;
 
@@ -89,18 +78,6 @@ public class QuestView : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
             gameObject.SetActive(false);
     }
-
-    private void ShowDetail(bool _isOn, Quest _quest)
-    {
-        if (_isOn)
-            questDetailView.Show(_quest);
-    }
-
-    private void AddQuest_To_ActiveQuestListView(Quest _quest)
-        => questListViewController.AddQuest_To_ActiveQuestListView(_quest, (_isOn) => ShowDetail(_isOn, _quest));
-
-    private void AddQuest_To_completedQuestListView(Quest _quest)
-        => questListViewController.AddQuest_To_completedQuestListView(_quest, (_isOn) => ShowDetail(_isOn, _quest));
 
     private void AddActiveQuestElement(Quest _quest)
         => questListViewController.AddQuest_To_ActiveQuestListView(_quest);
