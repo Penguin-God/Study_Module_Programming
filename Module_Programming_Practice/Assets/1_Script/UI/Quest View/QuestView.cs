@@ -6,32 +6,22 @@ using UnityEngine.Events;
 
 public class QuestView : MonoBehaviour
 {
-    [SerializeField] QuestListViewController questListViewController;
-    // [SerializeField] QuestDetailView questDetailView;
-
-    [SerializeField] ToggleGroup tabGroup;
     [SerializeField] QuestListView activeQuestListView;
     [SerializeField] QuestListView completedQuestListView;
     
-    public void _RemoveQuest_From_ActiveQuestListView(Quest _quest)
-        => activeQuestListView.RemoveElement(_quest);
-
     private void Start()
     {
         QuestSystem _questSystem = QuestSystem.Instance;
         SetupElement();
 
         _questSystem.OnQuestRegistered += AddActiveQuestElement;
-
-        _questSystem.OnQuestCompleted += RemoveQuest_From_ActiveQuestListView;
+        
+        _questSystem.OnQuestCompleted += RemoveActiveQuestElement;
         _questSystem.OnQuestCompleted += AddCompleteQuestElement;
 
-        _questSystem.OnQuestCanceled += RemoveQuest_From_ActiveQuestListView;
+        _questSystem.OnQuestCanceled += RemoveActiveQuestElement;
 
         gameObject.SetActive(false);
-
-        // 추가
-        //_questSystem.OnQuestCompleted += activeQuestListView.RemoveElement;
 
         void SetupElement()
         {
@@ -50,10 +40,10 @@ public class QuestView : MonoBehaviour
 
         _questSystem.OnQuestRegistered -= AddActiveQuestElement;
 
-        _questSystem.OnQuestCompleted -= RemoveQuest_From_ActiveQuestListView;
+        _questSystem.OnQuestCompleted -= RemoveActiveQuestElement;
         _questSystem.OnQuestCompleted -= AddCompleteQuestElement;
 
-        _questSystem.OnQuestCanceled -= RemoveQuest_From_ActiveQuestListView;
+        _questSystem.OnQuestCanceled -= RemoveActiveQuestElement;
     }
 
     private void Update()
@@ -62,19 +52,9 @@ public class QuestView : MonoBehaviour
             gameObject.SetActive(false);
     }
 
-    private void AddActiveQuestElement(Quest _quest)
-        => questListViewController.AddQuest_To_ActiveQuestListView(_quest);
-
-    private void AddCompleteQuestElement(Quest _quest)
-        => questListViewController.AddQuest_To_CompletedQuestListView(_quest);
-
-
-    #region Only Callback Function
-
-    private void RemoveQuest_From_ActiveQuestListView(Quest _quest)
-    {
-        questListViewController.RemoveQuest_From_ActiveQuestListView(_quest);
-    }
-
+    #region Callback Function
+    private void AddActiveQuestElement(Quest _quest) => activeQuestListView.AddElement(_quest);
+    private void AddCompleteQuestElement(Quest _quest) => completedQuestListView.AddElement(_quest);
+    private void RemoveActiveQuestElement(Quest _quest) => activeQuestListView.RemoveElement(_quest);
     #endregion
 }
