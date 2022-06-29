@@ -74,12 +74,6 @@ public class QuestDetailView : MonoBehaviour
         return _pool;
     }
 
-    private void CancelQuest()
-    {
-        if (Target.IsCancelable)
-            Target.Cancel();
-    }
-
     public void Show(Quest _quest)
     {
         displayGroup.SetActive(true);
@@ -156,6 +150,12 @@ public class QuestDetailView : MonoBehaviour
         Target = null;
         displayGroup.SetActive(false);
         cancelButton.gameObject.SetActive(false);
+    }
+
+    void CancelQuest()
+    {
+        if (Target.IsCancelable)
+            Target.Cancel();
     }
 
     #endregion
