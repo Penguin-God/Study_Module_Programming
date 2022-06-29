@@ -6,11 +6,8 @@ using UnityEngine.Events;
 
 public class QuestListViewController : MonoBehaviour
 {
-    [SerializeField] ToggleGroup tabGroup;
     [SerializeField] QuestListView activeQuestListView;
     [SerializeField] QuestListView completedQuestListView;
-
-    public IEnumerable<Toggle> Tabs => tabGroup.ActiveToggles();
 
     public void AddQuest_To_ActiveQuestListView(Quest _quest) => activeQuestListView.AddElement(_quest);
 

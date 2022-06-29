@@ -142,12 +142,6 @@ public class QuestDetailView : MonoBehaviour
         }
     }
 
-    public void Hide()
-    {
-        Target = null;
-        displayGroup.SetActive(false);
-        cancelButton.gameObject.SetActive(false);
-    }
 
     #region Only Callback Function
     void HideDetail(Quest _quest)
@@ -156,6 +150,13 @@ public class QuestDetailView : MonoBehaviour
     }
 
     void HideDetail(bool click) => Hide();
+
+    void Hide()
+    {
+        Target = null;
+        displayGroup.SetActive(false);
+        cancelButton.gameObject.SetActive(false);
+    }
 
     #endregion
 }
